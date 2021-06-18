@@ -10,11 +10,14 @@ import 'consts/consts.dart';
 class TimeZoneApi {
   /// {@macro time_zone_api}
 
-  TimeZoneApi({Client? httpClient}) : _httpClient = httpClient ?? Client();
+  TimeZoneApi({Client? httpClient, String? apiKey})
+      : _httpClient = httpClient ?? Client(),
+        _apiKey = apiKey ?? timeZoneApiKey;
 
   static const _baseUrl = 'timezone.abstractapi.com';
   static const _currentTimeEndpoint = 'v1/current_time';
   final Client _httpClient;
+  final String _apiKey;
 
   /// Get current time for a given longitude and latitude
   Future<DateTime> getCurrentTime(double longitude, double latitude) async {
@@ -22,7 +25,7 @@ class TimeZoneApi {
       _baseUrl,
       _currentTimeEndpoint,
       <String, String>{
-        'api_key': timeZoneApiKey,
+        'api_key': _apiKey,
         'location': '$longitude,$latitude',
       },
     );

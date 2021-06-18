@@ -1,7 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
-import 'package:time_zone_api/src/consts/consts.dart';
 import 'package:time_zone_api/time_zone_api.dart';
 
 class MockHttpClient extends Mock implements http.Client {}
@@ -21,7 +20,7 @@ void main() {
 
     setUp(() {
       httpClient = MockHttpClient();
-      timeZoneApi = TimeZoneApi(httpClient: httpClient);
+      timeZoneApi = TimeZoneApi(httpClient: httpClient, apiKey: 'X');
     });
 
     group('constructor', () {
@@ -46,7 +45,7 @@ void main() {
             'timezone.abstractapi.com',
             'v1/current_time',
             <String, String>{
-              'api_key': timeZoneApiKey,
+              'api_key': 'X',
               'location': '$longitude,$latitude',
             },
           )),
