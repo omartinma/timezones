@@ -5,16 +5,32 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:timezones/l10n/l10n.dart';
+import 'package:timezones/time_zones/time_zones.dart';
+
+class MockTimeZonesBloc extends MockBloc<TimeZonesEvent, TimeZonesState>
+    implements TimeZonesBloc {}
+
+class FakeTimeZonesEvent extends Fake implements TimeZonesEvent {}
+
+class FakeTimeZonesState extends Fake implements TimeZonesState {}
 
 extension PumpApp on WidgetTester {
-  Future<void> pumpApp(Widget widget) {
-    return pumpWidget(
-      MaterialApp(
+  Future<void> pumpApp(Widget widget, {TimeZonesBloc? timezonesBloc}) {
+    registerFallbackValue<TimeZonesEvent>(FakeTimeZonesEvent());
+    registerFallbackValue<TimeZonesState>(FakeTimeZonesState());
+    return pumpWidget(MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: timezonesBloc ?? MockTimeZonesBloc()),
+      ],
+      child: MaterialApp(
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -22,6 +38,6 @@ extension PumpApp on WidgetTester {
         supportedLocales: AppLocalizations.supportedLocales,
         home: widget,
       ),
-    );
+    ));
   }
 }

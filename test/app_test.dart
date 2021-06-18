@@ -4,16 +4,17 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
+// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:timezones/app/app.dart';
-import 'package:timezones/counter/counter.dart';
+import 'package:timezones/time_zones/time_zones.dart';
 
 void main() {
   group('App', () {
-    testWidgets('renders CounterPage', (tester) async {
+    testWidgets('renders TimeZonesPage', (tester) async {
       await tester.pumpWidget(const App());
-      expect(find.byType(CounterPage), findsOneWidget);
+      expect(find.byType(TimeZonesPage), findsOneWidget);
     });
   });
 }
