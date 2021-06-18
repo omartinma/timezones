@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:timezones/l10n/l10n.dart';
-import 'package:timezones/timezones/view/time_zones_page.dart';
+import 'package:timezones/time_zones/time_zones.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);

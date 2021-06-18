@@ -8,7 +8,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:timezones/app/app.dart';
-import 'package:timezones/timezones/timezones.dart';
+import 'package:timezones/time_zones/time_zones.dart';
 
 void main() {
   group('App', () {
