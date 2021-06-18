@@ -33,4 +33,4 @@ jobs:
       - name: Check Code Coverage
         uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
         with:
-          path: packages/photos_repository/coverage/lcov.info
+          path: packages/location_api/coverage/lcov.info
