@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'location.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 
 /// Location
 class Location {
@@ -28,7 +28,7 @@ class Location {
   final int woeid;
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 
 /// Lat and long of the location
 
