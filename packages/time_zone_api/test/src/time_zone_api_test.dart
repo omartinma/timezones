@@ -36,8 +36,8 @@ void main() {
         when(() => response.statusCode).thenReturn(200);
         when(() => response.body).thenReturn('[]');
         when(() => httpClient.get(any())).thenAnswer((_) async => response);
-        final longitude = 0.0;
-        final latitude = 0.0;
+        const longitude = 0.0;
+        const latitude = 0.0;
         try {
           await timeZoneApi.getCurrentTime(longitude, latitude);
         } catch (_) {}
@@ -62,8 +62,8 @@ void main() {
           }''',
         );
         when(() => httpClient.get(any())).thenAnswer((_) async => response);
-        final longitude = 0.0;
-        final latitude = 0.0;
+        const longitude = 0.0;
+        const latitude = 0.0;
         final actual = await timeZoneApi.getCurrentTime(longitude, latitude);
         expect(actual, isA<DateTime>().having((l) => l.year, 'year', 2020));
       });
