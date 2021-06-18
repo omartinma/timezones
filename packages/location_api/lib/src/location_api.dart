@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:location_api/src/models/location.dart';
 import 'package:http/http.dart' as http;
+import 'package:location_api/location_api.dart';
 
 /// Exception thrown when locationSearch fails.
 class LocationIdRequestFailure implements Exception {}
