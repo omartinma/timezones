@@ -15,9 +15,10 @@ dependencies:
   equatable: ^2.0.0
   flutter_bloc: ^7.0.0
   intl: ^0.17.0
-  timezone: ^0.7.0
   location_api:
     path: packages/location_api
+  time_zone_api:
+    path: packages/time_zone_api
 
 dev_dependencies:
   flutter_test:
