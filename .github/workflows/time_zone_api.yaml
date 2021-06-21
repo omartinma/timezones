@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - run: mkdir -p packages/time_zone_api/lib/src/consts/
+      - run: mkdir -p lib/src/consts/
 
       - name: Create secret file test
         uses: "finnp/create-file-action@master"
