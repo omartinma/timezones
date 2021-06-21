@@ -19,6 +19,8 @@ dependencies:
     path: packages/location_api
   time_zone_api:
     path: packages/time_zone_api
+  time_zone_repository:
+    path: packages/time_zone_repository
 
 dev_dependencies:
   flutter_test:

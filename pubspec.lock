@@ -413,6 +413,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0+1"
+  time_zone_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/time_zone_repository"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   typed_data:
     dependency: transitive
     description:

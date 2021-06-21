@@ -1,0 +1,17 @@
+name: time_zone_repository
+description: Repository for time zone
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+  
+dependencies:
+  location_api:
+    path: ../location_api
+  time_zone_api:
+    path: ../time_zone_api
+
+dev_dependencies:
+  test: ^1.17.5
+  very_good_analysis: ^2.1.1
