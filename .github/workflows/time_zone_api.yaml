@@ -19,7 +19,7 @@ jobs:
       - uses: subosito/flutter-action@v1.5.0
 
       - name: Decode secrets
-        run: echo $TIME_ZONE_API_SECRET | base64 -d > lib/src/consts/consts.dart
+        run: echo $TIME_ZONE_API_SECRET | base64 -d > lib/src/consts/secrets.dart
         env:
           TIME_ZONE_API_SECRET: ${{ secrets.TIME_ZONE_API_SECRET }}
 
