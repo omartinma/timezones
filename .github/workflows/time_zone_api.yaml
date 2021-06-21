@@ -16,13 +16,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: subosito/flutter-action@v1.5.0
+      #- uses: subosito/flutter-action@v1.5.0
 
-      - name: Create secret file
+      - name: Create test file
         uses: "finnp/create-file-action@master"
         env:
-          FILE_NAME: "lib/src/consts/secrets.dart"
-          FILE_BASE64: ${{ secrets.TIME_ZONE_API_SECRET }}
+          FILE_NAME: "lib/src/consts/test.dart"
+          FILE_BASE64: "test"
+
+      #- name: Create secret file
+       # uses: "finnp/create-file-action@master"
+        #env:
+         # FILE_NAME: "lib/src/consts/secrets.dart"
+        #  FILE_BASE64: ${{ secrets.TIME_ZONE_API_SECRET }}
 
 
 #      - name: Decode secrets
