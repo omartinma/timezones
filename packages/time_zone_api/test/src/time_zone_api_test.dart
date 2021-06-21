@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
+import 'package:time_zone_api/src/consts/secrets.dart';
 import 'package:time_zone_api/time_zone_api.dart';
 
 class MockHttpClient extends Mock implements http.Client {}
@@ -26,6 +27,12 @@ void main() {
     group('constructor', () {
       test('does not require an httpClient', () {
         expect(TimeZoneApi(), isNotNull);
+      });
+    });
+
+    group('api key', () {
+      test('is not empty', () {
+        expect(timeZoneApiKey, isNotEmpty);
       });
     });
 
