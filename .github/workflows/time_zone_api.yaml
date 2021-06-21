@@ -18,10 +18,17 @@ jobs:
 
       - uses: subosito/flutter-action@v1.5.0
 
-      - name: Decode secrets
-        run: echo $TIME_ZONE_API_SECRET | base64 -d > lib/src/consts/secrets.dart
+      - name: Create secret file
+        uses: "finnp/create-file-action@master"
         env:
-          TIME_ZONE_API_SECRET: ${{ secrets.TIME_ZONE_API_SECRET }}
+          FILE_NAME: "lib/src/consts/secrets.dart"
+          FILE_BASE64: ${{ secrets.TIME_ZONE_API_SECRET }}
+
+
+#      - name: Decode secrets
+ #       run: echo $TIME_ZONE_API_SECRET | base64 -d > lib/src/consts/secrets.dart
+  #      env:
+   #       TIME_ZONE_API_SECRET: ${{ secrets.TIME_ZONE_API_SECRET }}
 
       - name: Install Dependencies
         run: flutter packages get
