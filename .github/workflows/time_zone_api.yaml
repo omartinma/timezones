@@ -21,7 +21,7 @@ jobs:
       - name: Create test file
         uses: "finnp/create-file-action@master"
         env:
-          FILE_NAME: "lib/src/consts/test.dart"
+          FILE_NAME: "packages/time_zone_api/lib/src/consts/test.dart"
           FILE_BASE64: "test"
 
       #- name: Create secret file
