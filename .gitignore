@@ -1,5 +1,5 @@
 #API keys
-/packages/time_zone_api/lib/src/consts/
+#/packages/time_zone_api/lib/src/consts/
 # Miscellaneous
 *.class
 *.lock
