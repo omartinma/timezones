@@ -1,10 +1,10 @@
 name: location_api
 
-#on:
- # pull_request:
-  #  paths:
-   #   - "packages/location_api/**"
-    #  - ".github/workflows/location_api.yaml"
+on:
+  pull_request:
+    paths:
+      - "packages/location_api/**"
+      - ".github/workflows/location_api.yaml"
 
 jobs:
   build:

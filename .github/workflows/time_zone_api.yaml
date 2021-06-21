@@ -16,13 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - run: mkdir -p lib/src/consts/
-
-      - name: Create secret file test
-        uses: "finnp/create-file-action@master"
-        env:
-          FILE_NAME: "packages/time_zone_api/lib/src/consts/secrets1.dart"
-          FILE_BASE64: ${{ secrets.TIME_ZONE_API_SECRET }}
+      - name: Create secret directory
+        run: mkdir -p lib/src/consts/
 
       - name: Create secret file
         uses: "finnp/create-file-action@master"
@@ -31,11 +26,6 @@ jobs:
           FILE_BASE64: ${{ secrets.TIME_ZONE_API_SECRET }}
 
       - uses: subosito/flutter-action@v1.5.0
-
-#      - name: Decode secrets
- #       run: echo $TIME_ZONE_API_SECRET | base64 -d > lib/src/consts/secrets.dart
-  #      env:
-   #       TIME_ZONE_API_SECRET: ${{ secrets.TIME_ZONE_API_SECRET }}
 
       - name: Install Dependencies
         run: flutter packages get
