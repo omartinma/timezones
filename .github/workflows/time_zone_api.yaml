@@ -21,7 +21,7 @@ jobs:
       - name: Create secret file
         uses: "finnp/create-file-action@master"
         env:
-          FILE_NAME: "packages/time_zone_api/lib/src/consts/test.dart"
+          FILE_NAME: "packages/time_zone_api/lib/src/consts/secrets.dart"
           FILE_BASE64: ${{ secrets.TIME_ZONE_API_SECRET }}
 
 #      - name: Decode secrets
