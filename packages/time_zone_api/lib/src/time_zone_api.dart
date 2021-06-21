@@ -1,8 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-
-import 'consts/consts.dart';
+import 'package:time_zone_api/src/consts/secrets.dart';
 
 /// {@template time_zone_api}
 /// Time Zone API
