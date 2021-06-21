@@ -13,7 +13,5 @@ class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
   @override
   Stream<TimeZonesState> mapEventToState(
     TimeZonesEvent event,
-  ) async* {
-    // TODO: implement mapEventToState
-  }
+  ) async* {}
 }

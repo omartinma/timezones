@@ -1,21 +1,30 @@
-name: timezones
+name: time_zone_api
 
-on: [pull_request, push]
+on:
+  pull_request:
+    paths:
+      - "packages/time_zone_api/**"
+      - ".github/workflows/time_zone_api.yaml"
 
 jobs:
   build:
+    defaults:
+      run:
+        working-directory: packages/time_zone_api
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
+
       - name: Create secret directory
-        run: mkdir -p packages/time_zone_api/lib/src/consts/
+        run: mkdir -p lib/src/consts/
 
       - name: Create secret file
         uses: "finnp/create-file-action@master"
         env:
           FILE_NAME: "packages/time_zone_api/lib/src/consts/secrets.dart"
           FILE_BASE64: ${{ secrets.TIME_ZONE_API_SECRET }}
+
       - uses: subosito/flutter-action@v1.5.0
 
       - name: Install Dependencies
@@ -33,4 +42,4 @@ jobs:
       - name: Check Code Coverage
         uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
         with:
-          min_coverage: 80
+          path: packages/time_zone_api/coverage/lcov.info
