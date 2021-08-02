@@ -25,7 +25,7 @@ class TimeZoneApi {
       _currentTimeEndpoint,
       <String, String>{
         'api_key': _apiKey,
-        'location': '$longitude,$latitude',
+        'location': '$latitude,$longitude',
       },
     );
     final response = await _httpClient.get(currentTimeRequest);
