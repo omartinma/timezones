@@ -1,6 +1,6 @@
 import 'package:location_api/location_api.dart';
 import 'package:time_zone_api/time_zone_api.dart';
-import 'package:time_zone_repository/src/models/time_zone.dart';
+import 'package:time_zone_repository/time_zone_repository.dart';
 
 /// {@template time_zone_repository}
 /// Repository for time zone
