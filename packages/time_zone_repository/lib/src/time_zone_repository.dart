@@ -9,10 +9,10 @@ class TimeZoneRepository {
   /// {@macro time_zone_repository}
 
   TimeZoneRepository({
-    TimeZoneApi? timeZoneApi,
-    LocationApi? locationApi,
-  })  : _timeZoneApi = timeZoneApi ?? TimeZoneApi(),
-        _locationApi = locationApi ?? LocationApi();
+    required TimeZoneApi timeZoneApi,
+    required LocationApi locationApi,
+  })  : _timeZoneApi = timeZoneApi,
+        _locationApi = locationApi;
 
   final TimeZoneApi _timeZoneApi;
   final LocationApi _locationApi;
