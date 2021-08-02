@@ -21,6 +21,9 @@ void main() {
 
     setUp(() {
       timeZoneRepository = MockTimeZoneRepository();
+      when(() => timeZoneRepository.getCurrentTimeForLocation(any()))
+          .thenAnswer((_) async => Future.value());
+      when(() => timeZoneRepository.getTimeZones()).thenAnswer((_) async => []);
     });
 
     testWidgets('renders AppView', (tester) async {
@@ -33,8 +36,17 @@ void main() {
   });
 
   group('AppView', () {
-    testWidgets('renders AppView', (tester) async {
-      await tester.pumpApp(AppView());
+    late TimeZoneRepository timeZoneRepository;
+
+    setUp(() {
+      timeZoneRepository = MockTimeZoneRepository();
+      when(() => timeZoneRepository.getCurrentTimeForLocation(any()))
+          .thenAnswer((_) async => Future.value());
+      when(() => timeZoneRepository.getTimeZones()).thenAnswer((_) async => []);
+    });
+
+    testWidgets('renders TimeZonesPage', (tester) async {
+      await tester.pumpApp(AppView(), timeZoneRepository: timeZoneRepository);
       await tester.pump();
       expect(find.byType(TimeZonesPage), findsOneWidget);
     });

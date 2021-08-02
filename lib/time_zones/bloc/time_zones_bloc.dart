@@ -28,12 +28,10 @@ class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
   ) async* {
     yield state.copyWith(status: TimeZonesStatus.loading);
     try {
-      final timeZone = await _timeZoneRepository.getCurrentTimeForLocation(
-        event.query,
-      );
+      final timeZone = await _timeZoneRepository.getTimeZones();
       yield state.copyWith(
         status: TimeZonesStatus.populated,
-        timeZone: timeZone,
+        timeZones: timeZone,
       );
     } catch (e, st) {
       yield state.copyWith(status: TimeZonesStatus.error);

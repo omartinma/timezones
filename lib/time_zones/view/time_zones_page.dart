@@ -11,7 +11,7 @@ class TimeZonesPage extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           TimeZonesBloc(timeZoneRepository: context.read<TimeZoneRepository>())
-            ..add(const TimeZonesFetchRequested(query: 'madrid')),
+            ..add(const TimeZonesFetchRequested()),
       child: const TimeZonesView(),
     );
   }
@@ -26,13 +26,11 @@ class TimeZonesView extends StatelessWidget {
       builder: (context, state) {
         switch (state.status) {
           case TimeZonesStatus.loading:
-            return const Center(child: CircularProgressIndicator());
+            return const TimeZonesLoadingView();
           case TimeZonesStatus.error:
-            return const Center(
-              child: Text('Not found'),
-            );
+            return const TimeZonesErrorView();
           case TimeZonesStatus.populated:
-            return TimeZonesPopulatedView(timeZone: state.timeZone!);
+            return TimeZonesPopulatedView(timeZones: state.timeZones);
         }
       },
     ));
