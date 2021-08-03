@@ -63,9 +63,11 @@ void main() {
         final response = MockResponse();
         when(() => response.statusCode).thenReturn(200);
         when(() => response.body).thenReturn(
-          '''{
+          '''
+          {
             "datetime": "2020-07-01 14:22:13"
-          }''',
+          }
+          ''',
         );
         when(() => httpClient.get(any())).thenAnswer((_) async => response);
         const longitude = 0.0;

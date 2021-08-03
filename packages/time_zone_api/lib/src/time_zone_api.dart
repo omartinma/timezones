@@ -30,6 +30,6 @@ class TimeZoneApi {
     );
     final response = await _httpClient.get(currentTimeRequest);
     final responseJson = jsonDecode(response.body) as Map<String, dynamic>;
-    return DateTime.parse(responseJson['datetime']);
+    return DateTime.parse(responseJson['datetime'] as String);
   }
 }
