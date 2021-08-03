@@ -54,7 +54,7 @@ void main() {
         when(() => response.statusCode).thenReturn(400);
         when(() => httpClient.get(any())).thenAnswer((_) async => response);
         expect(
-          () async => await locationApi.locationSearch(query),
+          () async => locationApi.locationSearch(query),
           throwsA(isA<LocationIdRequestFailure>()),
         );
       });
@@ -74,7 +74,8 @@ void main() {
         final response = MockResponse();
         when(() => response.statusCode).thenReturn(200);
         when(() => response.body).thenReturn(
-          '''[{
+          '''
+          [{
             "title": "mock-title",
             "location_type": "City",
             "latt_long": "-34.75,83.28",
