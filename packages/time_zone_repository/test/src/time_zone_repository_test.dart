@@ -45,7 +45,7 @@ void main() {
             await timeZoneRepository.getCurrentTimeForLocation(query);
         expect(response, timeZone);
         verify(() => locationApi.locationSearch(query)).called(1);
-        verify(() => timeZoneApi.getCurrentTime(0.0, 0)).called(1);
+        verify(() => timeZoneApi.getCurrentTime(0, 0)).called(1);
       });
     });
   });
