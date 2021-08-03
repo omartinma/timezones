@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Create secret directory
-        run: mkdir -p packages/time_zone_api/lib/src/consts/
+        run: mkdir -p ../time_zone_api/lib/src/consts/
 
       - name: Create secret file
         uses: "finnp/create-file-action@master"
