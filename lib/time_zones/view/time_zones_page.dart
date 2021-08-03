@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:timezones/time_zones/bloc/time_zones_bloc.dart';
+import 'package:time_zone_repository/time_zone_repository.dart';
+import 'package:timezones/time_zones/time_zones.dart';
 
 class TimeZonesPage extends StatelessWidget {
   const TimeZonesPage({Key? key}) : super(key: key);
@@ -8,7 +9,9 @@ class TimeZonesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TimeZonesBloc(),
+      create: (context) =>
+          TimeZonesBloc(timeZoneRepository: context.read<TimeZoneRepository>())
+            ..add(const TimeZonesFetchRequested()),
       child: const TimeZonesView(),
     );
   }
@@ -19,12 +22,17 @@ class TimeZonesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.read<TimeZonesBloc>().state;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(state.toString()),
-      ),
-      body: Container(),
-    );
+    return Scaffold(body: BlocBuilder<TimeZonesBloc, TimeZonesState>(
+      builder: (context, state) {
+        switch (state.status) {
+          case TimeZonesStatus.loading:
+            return const TimeZonesLoadingView();
+          case TimeZonesStatus.error:
+            return const TimeZonesErrorView();
+          case TimeZonesStatus.populated:
+            return TimeZonesPopulatedView(timeZones: state.timeZones);
+        }
+      },
+    ));
   }
 }

@@ -18,7 +18,6 @@ class TimeZoneRepository {
   final LocationApi _locationApi;
 
   /// Returns a [TimeZone] from a query based on location
-
   Future<TimeZone> getCurrentTimeForLocation(String query) async {
     final location = await _locationApi.locationSearch(query);
     final currentTime = await _timeZoneApi.getCurrentTime(
@@ -26,5 +25,11 @@ class TimeZoneRepository {
       location.latLng.latitude,
     );
     return TimeZone(location: location.title, currentTime: currentTime);
+  }
+
+  /// Returns list of [TimeZone]
+  Future<List<TimeZone>> getTimeZones() async {
+    final madrid = await getCurrentTimeForLocation('madrid');
+    return [madrid];
   }
 }

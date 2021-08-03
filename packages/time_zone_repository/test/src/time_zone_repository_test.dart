@@ -3,7 +3,6 @@ import 'package:location_api/location_api.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 import 'package:time_zone_api/time_zone_api.dart';
-import 'package:time_zone_repository/src/models/time_zone.dart';
 import 'package:time_zone_repository/time_zone_repository.dart';
 
 class MockTimeZoneApi extends Mock implements TimeZoneApi {}
@@ -46,6 +45,13 @@ void main() {
         expect(response, timeZone);
         verify(() => locationApi.locationSearch(query)).called(1);
         verify(() => timeZoneApi.getCurrentTime(0, 0)).called(1);
+      });
+    });
+
+    group('getTimeZones', () {
+      test('returns correct current timezones', () async {
+        final response = await timeZoneRepository.getTimeZones();
+        expect(response, [timeZone]);
       });
     });
   });

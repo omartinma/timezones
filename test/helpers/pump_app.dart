@@ -12,8 +12,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:time_zone_repository/time_zone_repository.dart';
 import 'package:timezones/l10n/l10n.dart';
 import 'package:timezones/time_zones/time_zones.dart';
+
+class MockTimeZoneRepository extends Mock implements TimeZoneRepository {}
 
 class MockTimeZonesBloc extends MockBloc<TimeZonesEvent, TimeZonesState>
     implements TimeZonesBloc {}
@@ -23,12 +26,14 @@ class FakeTimeZonesEvent extends Fake implements TimeZonesEvent {}
 class FakeTimeZonesState extends Fake implements TimeZonesState {}
 
 extension PumpApp on WidgetTester {
-  Future<void> pumpApp(Widget widget, {TimeZonesBloc? timezonesBloc}) {
-    registerFallbackValue<TimeZonesEvent>(FakeTimeZonesEvent());
-    registerFallbackValue<TimeZonesState>(FakeTimeZonesState());
-    return pumpWidget(MultiBlocProvider(
+  Future<void> pumpApp(Widget widget,
+      {TimeZoneRepository? timeZoneRepository}) {
+    registerFallbackValues();
+    return pumpWidget(MultiRepositoryProvider(
       providers: [
-        BlocProvider.value(value: timezonesBloc ?? MockTimeZonesBloc()),
+        RepositoryProvider.value(
+          value: timeZoneRepository ?? MockTimeZoneRepository(),
+        ),
       ],
       child: MaterialApp(
         localizationsDelegates: const [
@@ -40,4 +45,9 @@ extension PumpApp on WidgetTester {
       ),
     ));
   }
+}
+
+void registerFallbackValues() {
+  registerFallbackValue<TimeZonesEvent>(FakeTimeZonesEvent());
+  registerFallbackValue<TimeZonesState>(FakeTimeZonesState());
 }

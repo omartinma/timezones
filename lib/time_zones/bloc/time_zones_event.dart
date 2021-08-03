@@ -1,4 +1,9 @@
 part of 'time_zones_bloc.dart';
 
-@immutable
-abstract class TimeZonesEvent {}
+abstract class TimeZonesEvent {
+  const TimeZonesEvent();
+}
+
+class TimeZonesFetchRequested extends TimeZonesEvent {
+  const TimeZonesFetchRequested();
+}
