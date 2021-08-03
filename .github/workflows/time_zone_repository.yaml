@@ -19,6 +19,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Create secret directory
+        run: mkdir -p ../time_zone_api/lib/src/consts/
+
+      - name: Create secret file
+        uses: "finnp/create-file-action@master"
+        env:
+          FILE_NAME: "packages/time_zone_api/lib/src/consts/secrets.dart"
+          FILE_BASE64: ${{ secrets.TIME_ZONE_API_SECRET }}
+
       - name: Install Dependencies
         run: pub get
 
