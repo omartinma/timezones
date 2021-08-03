@@ -68,9 +68,7 @@ void main() {
     });
 
     testWidgets('renders TimeZonesLoadingView when loading', (tester) async {
-      when(() => timeZonesBloc.state).thenReturn(TimeZonesState(
-        status: TimeZonesStatus.loading,
-      ));
+      when(() => timeZonesBloc.state).thenReturn(TimeZonesState());
       await tester.pumpTimeZonesPage(
         const TimeZonesView(),
         timeZonesBloc: timeZonesBloc,

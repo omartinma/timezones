@@ -10,7 +10,7 @@ part 'time_zones_state.dart';
 class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
   TimeZonesBloc({required TimeZoneRepository timeZoneRepository})
       : _timeZoneRepository = timeZoneRepository,
-        super(const TimeZonesState(status: TimeZonesStatus.loading));
+        super(const TimeZonesState());
 
   final TimeZoneRepository _timeZoneRepository;
 

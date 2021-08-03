@@ -34,7 +34,7 @@ void main() {
         },
         act: (bloc) => bloc.add(TimeZonesFetchRequested()),
         expect: () => [
-          TimeZonesState(status: TimeZonesStatus.loading),
+          TimeZonesState(),
           TimeZonesState(
             status: TimeZonesStatus.populated,
             timeZones: [timeZone1],
