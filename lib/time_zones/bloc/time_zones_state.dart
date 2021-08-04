@@ -9,18 +9,18 @@ enum TimeZonesStatus {
 class TimeZonesState extends Equatable {
   const TimeZonesState({
     this.status = TimeZonesStatus.loading,
-    this.timeZones = const [],
+    this.timeZones = const TimeZones(),
   });
 
   final TimeZonesStatus status;
-  final List<TimeZone> timeZones;
+  final TimeZones timeZones;
 
   @override
   List<Object?> get props => [status, timeZones];
 
   TimeZonesState copyWith({
     TimeZonesStatus? status,
-    List<TimeZone>? timeZones,
+    TimeZones? timeZones,
   }) {
     return TimeZonesState(
       status: status ?? this.status,

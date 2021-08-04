@@ -19,6 +19,7 @@ dependencies:
     path: packages/location_api
   persistent_storage:
     path: packages/storage/persistent_storage
+  shared_preferences: ^2.0.6
   time_zone_api:
     path: packages/time_zone_api
   time_zone_repository:
