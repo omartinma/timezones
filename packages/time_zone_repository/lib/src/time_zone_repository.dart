@@ -35,7 +35,7 @@ class TimeZoneRepository {
 
   /// Returns list of [TimeZone]
   Future<List<TimeZone>> getTimeZones() async {
-    return List.empty();
+    return timeZones;
   }
 
   /// Add a new [TimeZone] and return the last updated list of [TimeZone]
