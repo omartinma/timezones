@@ -39,7 +39,8 @@ void main() {
 
     setUp(() {
       timeZoneRepository = MockTimeZoneRepository();
-      when(() => timeZoneRepository.getTimeZones()).thenAnswer((_) async => []);
+      when(() => timeZoneRepository.getTimeZones())
+          .thenAnswer((_) async => TimeZones());
     });
 
     testWidgets('renders time zones view', (tester) async {
@@ -56,6 +57,7 @@ void main() {
     late TimeZonesBloc timeZonesBloc;
     final currentTime = DateTime.now();
     final timeZone1 = TimeZone(location: 'madrid', currentTime: currentTime);
+    final timeZones = TimeZones(items: [timeZone1]);
 
     setUp(() {
       timeZonesBloc = MockTimeZonesBloc();
@@ -103,7 +105,7 @@ void main() {
       when(() => timeZonesBloc.state).thenReturn(
         TimeZonesState(
           status: TimeZonesStatus.populated,
-          timeZones: [timeZone1],
+          timeZones: timeZones,
         ),
       );
       await tester.pumpTimeZonesPage(
@@ -117,7 +119,7 @@ void main() {
       when(() => timeZonesBloc.state).thenReturn(
         TimeZonesState(
           status: TimeZonesStatus.populated,
-          timeZones: [timeZone1],
+          timeZones: timeZones,
         ),
       );
       await tester.pumpTimeZonesPage(

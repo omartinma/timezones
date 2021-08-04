@@ -23,7 +23,8 @@ void main() {
       timeZoneRepository = MockTimeZoneRepository();
       when(() => timeZoneRepository.getCurrentTimeForLocation(any()))
           .thenAnswer((_) async => Future.value());
-      when(() => timeZoneRepository.getTimeZones()).thenAnswer((_) async => []);
+      when(() => timeZoneRepository.getTimeZones())
+          .thenAnswer((_) async => TimeZones());
     });
 
     testWidgets('renders AppView', (tester) async {
@@ -42,7 +43,8 @@ void main() {
       timeZoneRepository = MockTimeZoneRepository();
       when(() => timeZoneRepository.getCurrentTimeForLocation(any()))
           .thenAnswer((_) async => Future.value());
-      when(() => timeZoneRepository.getTimeZones()).thenAnswer((_) async => []);
+      when(() => timeZoneRepository.getTimeZones())
+          .thenAnswer((_) async => TimeZones());
     });
 
     testWidgets('renders TimeZonesPage', (tester) async {
