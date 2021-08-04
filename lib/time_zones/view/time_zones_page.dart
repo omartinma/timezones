@@ -32,9 +32,9 @@ class TimeZonesView extends StatelessWidget {
             case TimeZonesStatus.error:
               return const TimeZonesErrorView();
             case TimeZonesStatus.populated:
-              return state.timeZones.isEmpty
+              return state.timeZones.items.isEmpty
                   ? const TimeZonesEmptyView()
-                  : TimeZonesPopulatedView(timeZones: state.timeZones);
+                  : TimeZonesPopulatedView(timeZones: state.timeZones.items);
           }
         },
       ),
