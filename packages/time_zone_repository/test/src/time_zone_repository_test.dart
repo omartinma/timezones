@@ -51,6 +51,13 @@ void main() {
     group('getTimeZones', () {
       test('returns correct current timezones', () async {
         final response = await timeZoneRepository.getTimeZones();
+        expect(response, isEmpty);
+      });
+    });
+
+    group('addTimeZone', () {
+      test('returns correct current timezones', () async {
+        final response = await timeZoneRepository.addTimeZone('title');
         expect(response, [timeZone]);
       });
     });

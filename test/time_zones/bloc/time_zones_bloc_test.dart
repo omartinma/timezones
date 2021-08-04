@@ -15,8 +15,6 @@ void main() {
 
     setUp(() {
       timeZoneRepository = MockTimeZoneRepository();
-      when(() => timeZoneRepository.getTimeZones())
-          .thenAnswer((_) async => [timeZone1]);
     });
 
     test('initial state is TimeZonesState.loading', () {
@@ -28,8 +26,10 @@ void main() {
 
     group('TimeZonesFetchRequested', () {
       blocTest<TimeZonesBloc, TimeZonesState>(
-        'emits state with new timezones',
+        'emits [loading, populates] when success',
         build: () {
+          when(() => timeZoneRepository.getTimeZones())
+              .thenAnswer((_) async => [timeZone1]);
           return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
         },
         act: (bloc) => bloc.add(TimeZonesFetchRequested()),
@@ -63,6 +63,41 @@ void main() {
             'status',
             TimeZonesStatus.error,
           ),
+        ],
+      );
+    });
+
+    group('TimeZonesAddRequested', () {
+      blocTest<TimeZonesBloc, TimeZonesState>(
+        'emits [loading, populates] when success',
+        build: () {
+          when(() => timeZoneRepository.addTimeZone('madrid'))
+              .thenAnswer((_) async => [timeZone1]);
+          return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
+        },
+        act: (bloc) => bloc.add(TimeZonesAddRequested(city: 'madrid')),
+        expect: () => [
+          TimeZonesState(),
+          TimeZonesState(
+            status: TimeZonesStatus.populated,
+            timeZones: [timeZone1],
+          )
+        ],
+      );
+
+      blocTest<TimeZonesBloc, TimeZonesState>(
+        'emits [loading, error] when there is an exception',
+        build: () {
+          when(() => timeZoneRepository.addTimeZone('madrid'))
+              .thenThrow(Exception());
+          return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
+        },
+        act: (bloc) => bloc.add(TimeZonesAddRequested(city: 'madrid')),
+        expect: () => [
+          TimeZonesState(),
+          TimeZonesState(
+            status: TimeZonesStatus.error,
+          )
         ],
       );
     });

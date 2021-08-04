@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:location_api/location_api.dart';
 import 'package:time_zone_api/time_zone_api.dart';
 import 'package:time_zone_repository/time_zone_repository.dart';
@@ -17,6 +19,10 @@ class TimeZoneRepository {
   final TimeZoneApi _timeZoneApi;
   final LocationApi _locationApi;
 
+  /// Exposes last updated list of [TimeZone]
+  List<TimeZone> get timeZones => _timeZones;
+  final List<TimeZone> _timeZones = <TimeZone>[];
+
   /// Returns a [TimeZone] from a query based on location
   Future<TimeZone> getCurrentTimeForLocation(String query) async {
     final location = await _locationApi.locationSearch(query);
@@ -29,7 +35,13 @@ class TimeZoneRepository {
 
   /// Returns list of [TimeZone]
   Future<List<TimeZone>> getTimeZones() async {
-    final madrid = await getCurrentTimeForLocation('madrid');
-    return [madrid];
+    return timeZones;
+  }
+
+  /// Add a new [TimeZone] and return the last updated list of [TimeZone]
+  Future<List<TimeZone>> addTimeZone(String query) async {
+    final newTimeZone = await getCurrentTimeForLocation(query);
+    _timeZones.add(newTimeZone);
+    return _timeZones;
   }
 }
