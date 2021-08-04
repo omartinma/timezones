@@ -1,0 +1,23 @@
+// ignore_for_file: prefer_const_constructors
+import 'package:flutter_test/flutter_test.dart';
+import 'package:timezones/time_zones/time_zones.dart';
+
+void main() {
+  group('TimeZonesEvent', () {
+    group('TimeZonesFetchRequested', () {
+      test('supports value comparison', () {
+        final instanceA = TimeZonesFetchRequested();
+        final instanceB = TimeZonesFetchRequested();
+        expect(instanceA, equals(instanceB));
+      });
+    });
+
+    group('TimeZonesAddRequested', () {
+      test('supports value comparison', () {
+        final instanceA = TimeZonesAddRequested(city: 'madrid');
+        final instanceB = TimeZonesAddRequested(city: 'madrid');
+        expect(instanceA, equals(instanceB));
+      });
+    });
+  });
+}

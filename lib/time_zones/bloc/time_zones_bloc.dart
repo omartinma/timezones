@@ -19,19 +19,35 @@ class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
     TimeZonesEvent event,
   ) async* {
     if (event is TimeZonesFetchRequested) {
-      yield* _mapTimeZonesFetchRequestedToState(event);
+      yield* _mapTimeZonesFetchRequestedToState();
+    } else if (event is TimeZonesAddRequested) {
+      yield* _mapTimeZonesAddRequestedToState(event);
     }
   }
 
-  Stream<TimeZonesState> _mapTimeZonesFetchRequestedToState(
-    TimeZonesFetchRequested event,
-  ) async* {
+  Stream<TimeZonesState> _mapTimeZonesFetchRequestedToState() async* {
     yield state.copyWith(status: TimeZonesStatus.loading);
     try {
       final timeZone = await _timeZoneRepository.getTimeZones();
       yield state.copyWith(
         status: TimeZonesStatus.populated,
         timeZones: timeZone,
+      );
+    } catch (e, st) {
+      yield state.copyWith(status: TimeZonesStatus.error);
+      addError(e, st);
+    }
+  }
+
+  Stream<TimeZonesState> _mapTimeZonesAddRequestedToState(
+    TimeZonesAddRequested event,
+  ) async* {
+    yield state.copyWith(status: TimeZonesStatus.loading);
+    try {
+      final timeZones = await _timeZoneRepository.addTimeZone(event.city);
+      yield state.copyWith(
+        status: TimeZonesStatus.populated,
+        timeZones: timeZones,
       );
     } catch (e, st) {
       yield state.copyWith(status: TimeZonesStatus.error);

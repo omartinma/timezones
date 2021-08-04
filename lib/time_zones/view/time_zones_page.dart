@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_zone_repository/time_zone_repository.dart';
+import 'package:timezones/search/search.dart';
 import 'package:timezones/time_zones/time_zones.dart';
 
 class TimeZonesPage extends StatelessWidget {
@@ -22,17 +23,31 @@ class TimeZonesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: BlocBuilder<TimeZonesBloc, TimeZonesState>(
-      builder: (context, state) {
-        switch (state.status) {
-          case TimeZonesStatus.loading:
-            return const TimeZonesLoadingView();
-          case TimeZonesStatus.error:
-            return const TimeZonesErrorView();
-          case TimeZonesStatus.populated:
-            return TimeZonesPopulatedView(timeZones: state.timeZones);
-        }
-      },
-    ));
+    return Scaffold(
+      body: BlocBuilder<TimeZonesBloc, TimeZonesState>(
+        builder: (context, state) {
+          switch (state.status) {
+            case TimeZonesStatus.loading:
+              return const TimeZonesLoadingView();
+            case TimeZonesStatus.error:
+              return const TimeZonesErrorView();
+            case TimeZonesStatus.populated:
+              return state.timeZones.isEmpty
+                  ? const TimeZonesEmptyView()
+                  : TimeZonesPopulatedView(timeZones: state.timeZones);
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final bloc = context.read<TimeZonesBloc>();
+          final query = await Navigator.of(context).push(SearchPage.route());
+          if (query != null) {
+            bloc.add(TimeZonesAddRequested(city: query));
+          }
+        },
+        child: const Icon(Icons.search),
+      ),
+    );
   }
 }

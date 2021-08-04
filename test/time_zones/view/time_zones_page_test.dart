@@ -36,13 +36,10 @@ extension TimeZonesTester on WidgetTester {
 void main() {
   group('TimeZonesPage', () {
     late TimeZoneRepository timeZoneRepository;
-    final currentTime = DateTime.now();
-    final timeZone1 = TimeZone(location: 'madrid', currentTime: currentTime);
 
     setUp(() {
       timeZoneRepository = MockTimeZoneRepository();
-      when(() => timeZoneRepository.getTimeZones())
-          .thenAnswer((_) async => [timeZone1]);
+      when(() => timeZoneRepository.getTimeZones()).thenAnswer((_) async => []);
     });
 
     testWidgets('renders time zones view', (tester) async {
@@ -57,6 +54,8 @@ void main() {
 
   group('TimeZonesView', () {
     late TimeZonesBloc timeZonesBloc;
+    final currentTime = DateTime.now();
+    final timeZone1 = TimeZone(location: 'madrid', currentTime: currentTime);
 
     setUp(() {
       timeZonesBloc = MockTimeZonesBloc();
@@ -87,7 +86,7 @@ void main() {
       expect(find.byType(TimeZonesErrorView), findsOneWidget);
     });
 
-    testWidgets('renders TimeZonesPopulatedView when populated',
+    testWidgets('renders TimeZonesEmptyView when populated but empty',
         (tester) async {
       when(() => timeZonesBloc.state).thenReturn(TimeZonesState(
         status: TimeZonesStatus.populated,
@@ -96,7 +95,43 @@ void main() {
         const TimeZonesView(),
         timeZonesBloc: timeZonesBloc,
       );
+      expect(find.byType(TimeZonesEmptyView), findsOneWidget);
+    });
+
+    testWidgets('renders TimeZonesPopulatedView when populated and no empty',
+        (tester) async {
+      when(() => timeZonesBloc.state).thenReturn(
+        TimeZonesState(
+          status: TimeZonesStatus.populated,
+          timeZones: [timeZone1],
+        ),
+      );
+      await tester.pumpTimeZonesPage(
+        const TimeZonesView(),
+        timeZonesBloc: timeZonesBloc,
+      );
       expect(find.byType(TimeZonesPopulatedView), findsOneWidget);
+    });
+
+    testWidgets('triggers fetch on search pop', (tester) async {
+      when(() => timeZonesBloc.state).thenReturn(
+        TimeZonesState(
+          status: TimeZonesStatus.populated,
+          timeZones: [timeZone1],
+        ),
+      );
+      await tester.pumpTimeZonesPage(
+        const TimeZonesView(),
+        timeZonesBloc: timeZonesBloc,
+      );
+      await tester.tap(find.byType(FloatingActionButton));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextField), 'Chicago');
+      await tester.tap(find.byKey(const Key('searchPage_search_iconButton')));
+      await tester.pumpAndSettle();
+      verify(
+        () => timeZonesBloc.add(TimeZonesAddRequested(city: 'Chicago')),
+      ).called(1);
     });
   });
 }
