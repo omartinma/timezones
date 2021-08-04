@@ -42,4 +42,4 @@ jobs:
       - name: Check Code Coverage
         uses: VeryGoodOpenSource/very_good_coverage@v1.1.1
         with:
-          path: very_good_project/packages/app_config_repository/coverage/lcov.info
+          path: packages/time_zone_repository/coverage/lcov.info
