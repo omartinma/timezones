@@ -76,6 +76,12 @@ void main() {
         final response = await timeZoneRepository.getTimeZones();
         expect(response, emptyTimeZones);
       });
+
+      test('returns empty time zones if cache is empty', () async {
+        when(() => storage.read(key: cacheKey)).thenAnswer((_) async => null);
+        final response = await timeZoneRepository.getTimeZones();
+        expect(response, emptyTimeZones);
+      });
     });
 
     group('addTimeZone', () {
