@@ -32,11 +32,15 @@ class TimeZoneRepository {
   /// Returns a [TimeZone] from a query based on location
   Future<TimeZone> getCurrentTimeForLocation(String query) async {
     final location = await _locationApi.locationSearch(query);
-    final currentTime = await _timeZoneApi.getCurrentTime(
+    final timeZoneApiResponse = await _timeZoneApi.getTimeZone(
       location.latLng.longitude,
       location.latLng.latitude,
     );
-    return TimeZone(location: location.title, currentTime: currentTime);
+    return TimeZone(
+      location: location.title,
+      currentTime: timeZoneApiResponse.datetime,
+      timezoneAbbreviation: timeZoneApiResponse.timezoneAbbreviation,
+    );
   }
 
   /// Returns [TimeZones]
@@ -47,7 +51,6 @@ class TimeZoneRepository {
       final cachedTimeZones = TimeZones.fromJson(
         jsonDecode(cachedTimeZonesJson) as Map<String, dynamic>,
       );
-
       _timeZones = cachedTimeZones;
     }
     return timeZones;

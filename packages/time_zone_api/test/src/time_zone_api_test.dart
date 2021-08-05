@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
@@ -36,7 +38,7 @@ void main() {
       });
     });
 
-    group('getCurrentTime', () {
+    group('getTimeZone', () {
       test('makes correct http request', () async {
         final response = MockResponse();
         when(() => response.statusCode).thenReturn(200);
@@ -45,7 +47,7 @@ void main() {
         const longitude = 0.0;
         const latitude = 0.0;
         try {
-          await timeZoneApi.getCurrentTime(longitude, latitude);
+          await timeZoneApi.getTimeZone(longitude, latitude);
         } catch (_) {}
         verify(
           () => httpClient.get(Uri.https(
@@ -59,21 +61,25 @@ void main() {
         ).called(1);
       });
 
-      test('returns DateTime on valid response', () async {
+      test('returns TimeZoneApiResponse on valid response', () async {
         final response = MockResponse();
-        when(() => response.statusCode).thenReturn(200);
-        when(() => response.body).thenReturn(
-          '''
+        const jsonResponse = '''
           {
-            "datetime": "2020-07-01 14:22:13"
+            "datetime": "2020-07-01 14:22:13",
+            "timezone_abbreviation": "BST"
           }
-          ''',
-        );
+          ''';
+        when(() => response.statusCode).thenReturn(200);
+        when(() => response.body).thenReturn(jsonResponse);
         when(() => httpClient.get(any())).thenAnswer((_) async => response);
         const longitude = 0.0;
         const latitude = 0.0;
-        final actual = await timeZoneApi.getCurrentTime(longitude, latitude);
-        expect(actual, isA<DateTime>().having((l) => l.year, 'year', 2020));
+        final actualApi = await timeZoneApi.getTimeZone(longitude, latitude);
+        final actualJson = TimeZoneApiResponse.fromJson(
+          jsonDecode(jsonResponse) as Map<String, dynamic>,
+        );
+        expect(actualApi.datetime, actualJson.datetime);
+        expect(actualApi.timezoneAbbreviation, actualJson.timezoneAbbreviation);
       });
     });
   });

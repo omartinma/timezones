@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:time_zone_api/src/consts/secrets.dart';
+import 'package:time_zone_api/time_zone_api.dart';
 
 /// {@template time_zone_api}
 /// Time Zone API
@@ -19,7 +20,10 @@ class TimeZoneApi {
   final String _apiKey;
 
   /// Get current time for a given longitude and latitude
-  Future<DateTime> getCurrentTime(double longitude, double latitude) async {
+  Future<TimeZoneApiResponse> getTimeZone(
+    double longitude,
+    double latitude,
+  ) async {
     final currentTimeRequest = Uri.https(
       _baseUrl,
       _currentTimeEndpoint,
@@ -30,6 +34,6 @@ class TimeZoneApi {
     );
     final response = await _httpClient.get(currentTimeRequest);
     final responseJson = jsonDecode(response.body) as Map<String, dynamic>;
-    return DateTime.parse(responseJson['datetime'] as String);
+    return TimeZoneApiResponse.fromJson(responseJson);
   }
 }

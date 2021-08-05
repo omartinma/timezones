@@ -11,7 +11,11 @@ void main() {
   group('TimeZonesBloc', () {
     late TimeZoneRepository timeZoneRepository;
     final currentTime = DateTime.now();
-    final timeZone1 = TimeZone(location: 'madrid', currentTime: currentTime);
+    final timeZone1 = TimeZone(
+      location: 'madrid',
+      currentTime: currentTime,
+      timezoneAbbreviation: 'CEST',
+    );
     final timeZones = TimeZones(items: [timeZone1]);
 
     setUp(() {

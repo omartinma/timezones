@@ -25,7 +25,15 @@ void main() {
       woeid: 0,
     );
     final time = DateTime.now();
-    final timeZone = TimeZone(location: location.title, currentTime: time);
+    final timeZoneApiResponse = TimeZoneApiResponse(
+      datetime: time,
+      timezoneAbbreviation: 'CEST',
+    );
+    final timeZone = TimeZone(
+      location: location.title,
+      currentTime: timeZoneApiResponse.datetime,
+      timezoneAbbreviation: timeZoneApiResponse.timezoneAbbreviation,
+    );
     const emptyTimeZonesJson = '''
 {
   "items": []
@@ -47,8 +55,8 @@ void main() {
         (_) => Future.value(),
       );
 
-      when(() => timeZoneApi.getCurrentTime(any(), any())).thenAnswer(
-        (_) async => time,
+      when(() => timeZoneApi.getTimeZone(any(), any())).thenAnswer(
+        (_) async => timeZoneApiResponse,
       );
       when(() => locationApi.locationSearch(any())).thenAnswer(
         (_) async => location,
@@ -67,7 +75,7 @@ void main() {
             await timeZoneRepository.getCurrentTimeForLocation(query);
         expect(response, timeZone);
         verify(() => locationApi.locationSearch(query)).called(1);
-        verify(() => timeZoneApi.getCurrentTime(0, 0)).called(1);
+        verify(() => timeZoneApi.getTimeZone(0, 0)).called(1);
       });
     });
 

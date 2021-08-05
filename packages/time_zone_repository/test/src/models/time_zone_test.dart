@@ -7,6 +7,7 @@ void main() {
       final timeZone1 = TimeZone(
         location: 'location',
         currentTime: DateTime.now(),
+        timezoneAbbreviation: 'timezoneAbbreviation',
       );
 
       final timeZone2 = TimeZone.fromJson(timeZone1.toJson());

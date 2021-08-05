@@ -42,9 +42,9 @@ class TimeZonesView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           FloatingActionButton(
-            onPressed: () async {
-              final bloc = context.read<TimeZonesBloc>();
-            },
+            onPressed: () async => context
+                .read<TimeZonesBloc>()
+                .add(const TimeZonesFetchRequested()),
             child: const Icon(Icons.refresh),
           ),
           const SizedBox(
