@@ -38,15 +38,30 @@ class TimeZonesView extends StatelessWidget {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final bloc = context.read<TimeZonesBloc>();
-          final query = await Navigator.of(context).push(SearchPage.route());
-          if (query != null) {
-            bloc.add(TimeZonesAddRequested(city: query));
-          }
-        },
-        child: const Icon(Icons.search),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton(
+            onPressed: () async {
+              final bloc = context.read<TimeZonesBloc>();
+            },
+            child: const Icon(Icons.refresh),
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          FloatingActionButton(
+            onPressed: () async {
+              final bloc = context.read<TimeZonesBloc>();
+              final query =
+                  await Navigator.of(context).push(SearchPage.route());
+              if (query != null) {
+                bloc.add(TimeZonesAddRequested(city: query));
+              }
+            },
+            child: const Icon(Icons.search),
+          )
+        ],
       ),
     );
   }
