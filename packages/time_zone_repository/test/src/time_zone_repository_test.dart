@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors
+
 import 'package:location_api/location_api.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:storage/storage.dart';
@@ -25,13 +26,27 @@ void main() {
       woeid: 0,
     );
     final time = DateTime.now();
-    final timeZone = TimeZone(location: location.title, currentTime: time);
-    const emptyTimeZonesJson = '''
+    final timeZoneApiResponse = TimeZoneApiResponse(
+      datetime: time,
+      timezoneAbbreviation: 'CEST',
+    );
+    final timeZone = TimeZone(
+      location: location.title,
+      currentTime: timeZoneApiResponse.datetime,
+      timezoneAbbreviation: timeZoneApiResponse.timezoneAbbreviation,
+    );
+    const timeZonesJson = '''
 {
-  "items": []
+   "items":[
+      {
+         "location":"Chicago",
+         "currentTime":"2021-08-05T06:08:02.000",
+         "timezoneAbbreviation":"CDT"
+      }
+   ]
 }
 ''';
-    const emptyTimeZones = TimeZones();
+
     final timeZones = TimeZones(items: [timeZone]);
 
     setUp(() {
@@ -39,7 +54,7 @@ void main() {
       locationApi = MockLocationApi();
       storage = MockStorage();
       when(() => storage.read(key: cacheKey))
-          .thenAnswer((_) => Future.value(emptyTimeZonesJson));
+          .thenAnswer((_) => Future.value(timeZonesJson));
       when(() => storage.write(
             key: any(named: 'key'),
             value: any(named: 'value'),
@@ -47,8 +62,8 @@ void main() {
         (_) => Future.value(),
       );
 
-      when(() => timeZoneApi.getCurrentTime(any(), any())).thenAnswer(
-        (_) async => time,
+      when(() => timeZoneApi.getTimeZone(any(), any())).thenAnswer(
+        (_) async => timeZoneApiResponse,
       );
       when(() => locationApi.locationSearch(any())).thenAnswer(
         (_) async => location,
@@ -67,20 +82,24 @@ void main() {
             await timeZoneRepository.getCurrentTimeForLocation(query);
         expect(response, timeZone);
         verify(() => locationApi.locationSearch(query)).called(1);
-        verify(() => timeZoneApi.getCurrentTime(0, 0)).called(1);
+        verify(() => timeZoneApi.getTimeZone(0, 0)).called(1);
       });
     });
 
     group('getTimeZones', () {
       test('returns correct current timezones', () async {
         final response = await timeZoneRepository.getTimeZones();
-        expect(response, emptyTimeZones);
+
+        expect(
+          response,
+          isNotNull,
+        );
       });
 
       test('returns empty time zones if cache is empty', () async {
         when(() => storage.read(key: cacheKey)).thenAnswer((_) async => null);
         final response = await timeZoneRepository.getTimeZones();
-        expect(response, emptyTimeZones);
+        expect(response, TimeZones());
       });
     });
 

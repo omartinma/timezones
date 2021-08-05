@@ -11,8 +11,16 @@ void main() {
         Scaffold(
           body: TimeZonesPopulatedView(
             timeZones: [
-              TimeZone(location: 'location', currentTime: DateTime.now()),
-              TimeZone(location: 'location1', currentTime: DateTime.now()),
+              TimeZone(
+                location: 'location',
+                currentTime: DateTime.now(),
+                timezoneAbbreviation: 'CEST',
+              ),
+              TimeZone(
+                location: 'location1',
+                currentTime: DateTime.now(),
+                timezoneAbbreviation: 'CEST',
+              ),
             ],
           ),
         ),

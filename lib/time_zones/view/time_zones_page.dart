@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_zone_repository/time_zone_repository.dart';
-import 'package:timezones/search/search.dart';
 import 'package:timezones/time_zones/time_zones.dart';
 
 class TimeZonesPage extends StatelessWidget {
@@ -38,15 +37,13 @@ class TimeZonesView extends StatelessWidget {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final bloc = context.read<TimeZonesBloc>();
-          final query = await Navigator.of(context).push(SearchPage.route());
-          if (query != null) {
-            bloc.add(TimeZonesAddRequested(city: query));
-          }
-        },
-        child: const Icon(Icons.search),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: const [
+          RefreshButton(),
+          SizedBox(height: 8),
+          SearchButton(),
+        ],
       ),
     );
   }
