@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors
+
 import 'package:location_api/location_api.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:storage/storage.dart';
@@ -34,12 +35,18 @@ void main() {
       currentTime: timeZoneApiResponse.datetime,
       timezoneAbbreviation: timeZoneApiResponse.timezoneAbbreviation,
     );
-    const emptyTimeZonesJson = '''
+    const timeZonesJson = '''
 {
-  "items": []
+   "items":[
+      {
+         "location":"Chicago",
+         "currentTime":"2021-08-05T06:08:02.000",
+         "timezoneAbbreviation":"CDT"
+      }
+   ]
 }
 ''';
-    const emptyTimeZones = TimeZones();
+
     final timeZones = TimeZones(items: [timeZone]);
 
     setUp(() {
@@ -47,7 +54,7 @@ void main() {
       locationApi = MockLocationApi();
       storage = MockStorage();
       when(() => storage.read(key: cacheKey))
-          .thenAnswer((_) => Future.value(emptyTimeZonesJson));
+          .thenAnswer((_) => Future.value(timeZonesJson));
       when(() => storage.write(
             key: any(named: 'key'),
             value: any(named: 'value'),
@@ -82,13 +89,17 @@ void main() {
     group('getTimeZones', () {
       test('returns correct current timezones', () async {
         final response = await timeZoneRepository.getTimeZones();
-        expect(response, emptyTimeZones);
+
+        expect(
+          response,
+          isNotNull,
+        );
       });
 
       test('returns empty time zones if cache is empty', () async {
         when(() => storage.read(key: cacheKey)).thenAnswer((_) async => null);
         final response = await timeZoneRepository.getTimeZones();
-        expect(response, emptyTimeZones);
+        expect(response, TimeZones());
       });
     });
 

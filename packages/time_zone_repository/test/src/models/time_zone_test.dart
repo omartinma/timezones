@@ -13,5 +13,16 @@ void main() {
       final timeZone2 = TimeZone.fromJson(timeZone1.toJson());
       expect(timeZone1, equals(timeZone2));
     });
+
+    test('copyWith', () {
+      final timeZone1 = TimeZone(
+        location: 'location',
+        currentTime: DateTime.now(),
+        timezoneAbbreviation: 'timezoneAbbreviation',
+      );
+
+      final timeZone2 = timeZone1.copyWith();
+      expect(timeZone1, equals(timeZone2));
+    });
   });
 }

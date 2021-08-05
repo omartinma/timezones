@@ -24,4 +24,11 @@ class TimeZones extends Equatable {
 
   @override
   List<Object> get props => [items];
+
+  /// CopyWith
+  TimeZones copyWith({List<TimeZone>? items}) {
+    return TimeZones(
+      items: items ?? this.items,
+    );
+  }
 }

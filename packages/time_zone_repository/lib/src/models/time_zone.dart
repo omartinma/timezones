@@ -31,4 +31,17 @@ class TimeZone extends Equatable {
 
   @override
   List<Object> get props => [location, currentTime, timezoneAbbreviation];
+
+  /// CopyWith
+  TimeZone copyWith({
+    String? location,
+    DateTime? currentTime,
+    String? timezoneAbbreviation,
+  }) {
+    return TimeZone(
+      location: location ?? this.location,
+      currentTime: currentTime ?? this.currentTime,
+      timezoneAbbreviation: timezoneAbbreviation ?? this.timezoneAbbreviation,
+    );
+  }
 }
