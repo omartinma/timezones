@@ -12,6 +12,7 @@ void main() {
     late TimeZoneRepository timeZoneRepository;
     final currentTime = DateTime.now();
     final timeZone1 = TimeZone(location: 'madrid', currentTime: currentTime);
+    final timeZones = TimeZones(items: [timeZone1]);
 
     setUp(() {
       timeZoneRepository = MockTimeZoneRepository();
@@ -29,7 +30,7 @@ void main() {
         'emits [loading, populates] when success',
         build: () {
           when(() => timeZoneRepository.getTimeZones())
-              .thenAnswer((_) async => [timeZone1]);
+              .thenAnswer((_) async => timeZones);
           return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
         },
         act: (bloc) => bloc.add(TimeZonesFetchRequested()),
@@ -37,7 +38,7 @@ void main() {
           TimeZonesState(),
           TimeZonesState(
             status: TimeZonesStatus.populated,
-            timeZones: [timeZone1],
+            timeZones: timeZones,
           )
         ],
       );
@@ -72,7 +73,7 @@ void main() {
         'emits [loading, populates] when success',
         build: () {
           when(() => timeZoneRepository.addTimeZone('madrid'))
-              .thenAnswer((_) async => [timeZone1]);
+              .thenAnswer((_) async => timeZones);
           return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
         },
         act: (bloc) => bloc.add(TimeZonesAddRequested(city: 'madrid')),
@@ -80,7 +81,7 @@ void main() {
           TimeZonesState(),
           TimeZonesState(
             status: TimeZonesStatus.populated,
-            timeZones: [timeZone1],
+            timeZones: timeZones,
           )
         ],
       );
