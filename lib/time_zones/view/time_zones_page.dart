@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_zone_repository/time_zone_repository.dart';
-import 'package:timezones/search/search.dart';
 import 'package:timezones/time_zones/time_zones.dart';
 
 class TimeZonesPage extends StatelessWidget {
