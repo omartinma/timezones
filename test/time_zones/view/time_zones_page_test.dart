@@ -130,13 +130,31 @@ void main() {
         const TimeZonesView(),
         timeZonesBloc: timeZonesBloc,
       );
-      await tester.tap(find.byType(FloatingActionButton));
+      await tester.tap(find.byType(SearchButton));
       await tester.pumpAndSettle();
       await tester.enterText(find.byType(TextField), 'Chicago');
       await tester.tap(find.byKey(const Key('searchPage_search_iconButton')));
       await tester.pumpAndSettle();
       verify(
         () => timeZonesBloc.add(TimeZonesAddRequested(city: 'Chicago')),
+      ).called(1);
+    });
+
+    testWidgets('triggers fetch on RefreshButton clicked', (tester) async {
+      when(() => timeZonesBloc.state).thenReturn(
+        TimeZonesState(
+          status: TimeZonesStatus.populated,
+          timeZones: timeZones,
+        ),
+      );
+      await tester.pumpTimeZonesPage(
+        const TimeZonesView(),
+        timeZonesBloc: timeZonesBloc,
+      );
+      await tester.tap(find.byType(RefreshButton));
+
+      verify(
+        () => timeZonesBloc.add(TimeZonesFetchRequested()),
       ).called(1);
     });
   });

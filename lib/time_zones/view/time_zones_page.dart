@@ -40,27 +40,10 @@ class TimeZonesView extends StatelessWidget {
       ),
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          FloatingActionButton(
-            onPressed: () async => context
-                .read<TimeZonesBloc>()
-                .add(const TimeZonesFetchRequested()),
-            child: const Icon(Icons.refresh),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          FloatingActionButton(
-            onPressed: () async {
-              final bloc = context.read<TimeZonesBloc>();
-              final query =
-                  await Navigator.of(context).push(SearchPage.route());
-              if (query != null) {
-                bloc.add(TimeZonesAddRequested(city: query));
-              }
-            },
-            child: const Icon(Icons.search),
-          )
+        children: const [
+          RefreshButton(),
+          SizedBox(height: 8),
+          SearchButton(),
         ],
       ),
     );
