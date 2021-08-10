@@ -19,5 +19,14 @@ void main() {
         expect(instanceA, equals(instanceB));
       });
     });
+
+    group('TimeZonesTimeSelected', () {
+      test('supports value comparison', () {
+        final time = DateTime.now();
+        final instanceA = TimeZonesTimeSelected(time: time);
+        final instanceB = TimeZonesTimeSelected(time: time);
+        expect(instanceA, equals(instanceB));
+      });
+    });
   });
 }

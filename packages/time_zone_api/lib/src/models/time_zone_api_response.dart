@@ -10,6 +10,7 @@ class TimeZoneApiResponse {
   const TimeZoneApiResponse({
     required this.datetime,
     required this.timezoneAbbreviation,
+    required this.gmtOffset,
   });
 
   /// Converts a [Map<String, dynamic>] into a [TimeZoneApiResponse] instance.
@@ -21,4 +22,7 @@ class TimeZoneApiResponse {
 
   /// Time zone abbreviation
   final String timezoneAbbreviation;
+
+  /// Time zone gmt offset
+  final double gmtOffset;
 }

@@ -31,7 +31,7 @@ class TimeZoneRepository {
   TimeZones _timeZones = const TimeZones();
 
   /// Returns a [TimeZone] from a query based on location
-  Future<TimeZone> getCurrentTimeForLocation(String query) async {
+  Future<TimeZone> getTimeZoneForLocation(String query) async {
     final location = await _locationApi.locationSearch(query);
     final timeZoneApiResponse = await _timeZoneApi.getTimeZone(
       location.latLng.longitude,
@@ -41,10 +41,12 @@ class TimeZoneRepository {
       location: location.title,
       currentTime: timeZoneApiResponse.datetime,
       timezoneAbbreviation: timeZoneApiResponse.timezoneAbbreviation,
+      gmtOffset: timeZoneApiResponse.gmtOffset,
     );
   }
 
   /// Returns [TimeZones]
+  /// It will return the cache if any with the updated time
   Future<TimeZones> getTimeZones() async {
     final cachedTimeZonesJson = await _storage.read(key: _timeZoneCacheKey);
 
@@ -62,7 +64,7 @@ class TimeZoneRepository {
     /// We update in memory for the current time
     final timeZonesItems = <TimeZone>[];
     for (final item in _timeZones.items) {
-      final updatedTime = curDateTimeByZone(zone: item.timezoneAbbreviation);
+      final updatedTime = curDateTimeByUtcOffset(offset: item.gmtOffset);
       timeZonesItems.add(item.copyWith(currentTime: updatedTime));
     }
     _timeZones = _timeZones.copyWith(items: timeZonesItems);
@@ -74,12 +76,39 @@ class TimeZoneRepository {
   }
 
   /// Add a new [TimeZone] and return the last updated [TimeZones]
-  Future<TimeZones> addTimeZone(String query) async {
-    final newTimeZone = await getCurrentTimeForLocation(query);
-    final newItems = [..._timeZones.items, newTimeZone];
+  /// for a selected time
+  Future<TimeZones> addTimeZone(String query, DateTime timeSelected) async {
+    final newTimeZone = await getTimeZoneForLocation(query);
+    final convertedTime = dateTimeToOffset(
+      offset: newTimeZone.gmtOffset,
+      datetime: timeSelected.toUtc(),
+    );
+
+    final newItems = [
+      ..._timeZones.items,
+      newTimeZone.copyWith(currentTime: convertedTime),
+    ];
     _timeZones = TimeZones(items: newItems);
     await _refreshCache();
     return _timeZones;
+  }
+
+  /// Returns [TimeZones] updated for a given [timeSelected]
+  TimeZones convertTimeZones(
+    TimeZones timeZones,
+    DateTime timeSelected,
+  ) {
+    final newItems = <TimeZone>[];
+    for (final timeZone in timeZones.items) {
+      final convertedTime = dateTimeToOffset(
+        offset: timeZone.gmtOffset,
+        datetime: timeSelected.toUtc(),
+      );
+
+      final newTimeZone = timeZone.copyWith(currentTime: convertedTime);
+      newItems.add(newTimeZone);
+    }
+    return _timeZones = TimeZones(items: newItems);
   }
 
   Future<void> _refreshCache() async {

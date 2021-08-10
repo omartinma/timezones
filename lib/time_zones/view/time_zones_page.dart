@@ -45,6 +45,7 @@ class TimeZonesView extends StatelessWidget {
           SearchButton(),
         ],
       ),
+      bottomNavigationBar: const SelectTimeView(),
     );
   }
 }
