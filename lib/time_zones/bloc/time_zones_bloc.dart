@@ -35,6 +35,7 @@ class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
       yield state.copyWith(
         status: TimeZonesStatus.populated,
         timeZones: timeZone,
+        timeSelected: DateTime.now(),
       );
     } catch (e, st) {
       yield state.copyWith(status: TimeZonesStatus.error);
