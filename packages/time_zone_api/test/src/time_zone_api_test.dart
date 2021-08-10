@@ -66,7 +66,8 @@ void main() {
         const jsonResponse = '''
           {
             "datetime": "2020-07-01 14:22:13",
-            "timezone_abbreviation": "BST"
+            "timezone_abbreviation": "BST",
+            "gmt_offset": 0
           }
           ''';
         when(() => response.statusCode).thenReturn(200);
@@ -80,6 +81,7 @@ void main() {
         );
         expect(actualApi.datetime, actualJson.datetime);
         expect(actualApi.timezoneAbbreviation, actualJson.timezoneAbbreviation);
+        expect(actualApi.gmtOffset, actualJson.gmtOffset);
       });
     });
   });

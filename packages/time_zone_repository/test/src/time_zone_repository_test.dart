@@ -29,25 +29,27 @@ void main() {
     final timeZoneApiResponse = TimeZoneApiResponse(
       datetime: time,
       timezoneAbbreviation: 'CEST',
+      gmtOffset: 0,
     );
     final timeZone = TimeZone(
       location: location.title,
       currentTime: timeZoneApiResponse.datetime,
       timezoneAbbreviation: timeZoneApiResponse.timezoneAbbreviation,
+      gmtOffset: timeZoneApiResponse.gmtOffset,
     );
+    final timeZones = TimeZones(items: [timeZone]);
     const timeZonesJson = '''
 {
    "items":[
       {
          "location":"Chicago",
          "currentTime":"2021-08-05T06:08:02.000",
-         "timezoneAbbreviation":"CDT"
+         "timezoneAbbreviation":"CDT",
+         "gmtOffset" : 0
       }
    ]
 }
 ''';
-
-    final timeZones = TimeZones(items: [timeZone]);
 
     setUp(() {
       timeZoneApi = MockTimeZoneApi();
@@ -75,11 +77,10 @@ void main() {
       );
     });
 
-    group('getCurrentTimeForLocation', () {
+    group('getTimeZoneForLocation', () {
       const query = 'query';
       test('returns correct current time', () async {
-        final response =
-            await timeZoneRepository.getCurrentTimeForLocation(query);
+        final response = await timeZoneRepository.getTimeZoneForLocation(query);
         expect(response, timeZone);
         verify(() => locationApi.locationSearch(query)).called(1);
         verify(() => timeZoneApi.getTimeZone(0, 0)).called(1);
@@ -89,7 +90,6 @@ void main() {
     group('getTimeZones', () {
       test('returns correct current timezones', () async {
         final response = await timeZoneRepository.getTimeZones();
-
         expect(
           response,
           isNotNull,
@@ -104,9 +104,17 @@ void main() {
     });
 
     group('addTimeZone', () {
-      test('returns correct current timezones', () async {
-        final response = await timeZoneRepository.addTimeZone('title');
-        expect(response, timeZones);
+      test('completes', () async {
+        expect(timeZoneRepository.addTimeZone('title', time), completes);
+      });
+    });
+
+    group('convertTimeZones', () {
+      test('completes', () async {
+        expect(
+          timeZoneRepository.convertTimeZones(timeZones, DateTime.now()),
+          isNotNull,
+        );
       });
     });
   });

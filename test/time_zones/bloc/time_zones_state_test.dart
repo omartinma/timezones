@@ -5,7 +5,7 @@ import 'package:timezones/time_zones/time_zones.dart';
 void main() {
   group('TimeZonesState', () {
     test('supports value comparisons', () {
-      final instanceA = TimeZonesState();
+      final instanceA = TimeZonesState(timeSelected: DateTime.now());
       final instanceB = instanceA.copyWith();
       expect(instanceA, instanceB);
     });

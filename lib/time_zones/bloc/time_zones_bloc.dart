@@ -8,9 +8,10 @@ part 'time_zones_event.dart';
 part 'time_zones_state.dart';
 
 class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
-  TimeZonesBloc({required TimeZoneRepository timeZoneRepository})
-      : _timeZoneRepository = timeZoneRepository,
-        super(const TimeZonesState());
+  TimeZonesBloc({
+    required TimeZoneRepository timeZoneRepository,
+  })  : _timeZoneRepository = timeZoneRepository,
+        super(TimeZonesState(timeSelected: DateTime.now()));
 
   final TimeZoneRepository _timeZoneRepository;
 
@@ -22,6 +23,8 @@ class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
       yield* _mapTimeZonesFetchRequestedToState();
     } else if (event is TimeZonesAddRequested) {
       yield* _mapTimeZonesAddRequestedToState(event);
+    } else if (event is TimeZonesTimeSelected) {
+      yield* _mapTimeZonesTimeSelectedToState(event);
     }
   }
 
@@ -44,7 +47,10 @@ class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
   ) async* {
     yield state.copyWith(status: TimeZonesStatus.loading);
     try {
-      final timeZones = await _timeZoneRepository.addTimeZone(event.city);
+      final timeZones = await _timeZoneRepository.addTimeZone(
+        event.city,
+        state.timeSelected!,
+      );
       yield state.copyWith(
         status: TimeZonesStatus.populated,
         timeZones: timeZones,
@@ -53,5 +59,18 @@ class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
       yield state.copyWith(status: TimeZonesStatus.error);
       addError(e, st);
     }
+  }
+
+  Stream<TimeZonesState> _mapTimeZonesTimeSelectedToState(
+    TimeZonesTimeSelected event,
+  ) async* {
+    final newTimeZones = _timeZoneRepository.convertTimeZones(
+      state.timeZones,
+      event.time,
+    );
+    yield state.copyWith(
+      timeSelected: event.time,
+      timeZones: newTimeZones,
+    );
   }
 }

@@ -18,3 +18,12 @@ class TimeZonesAddRequested extends TimeZonesEvent {
   @override
   List<Object?> get props => [city];
 }
+
+class TimeZonesTimeSelected extends TimeZonesEvent {
+  const TimeZonesTimeSelected({required this.time});
+
+  final DateTime time;
+
+  @override
+  List<Object?> get props => [time];
+}

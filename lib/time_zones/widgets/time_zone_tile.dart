@@ -18,8 +18,7 @@ class TimeZoneTile extends StatelessWidget {
 
 extension TimeConverter on DateTime {
   String toHours() {
-    final hour = DateFormat.H().format(this);
-    final minutes = DateFormat.m().format(this);
-    return '$hour:$minutes';
+    final hour = DateFormat.Hm().format(this);
+    return hour;
   }
 }

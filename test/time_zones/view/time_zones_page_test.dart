@@ -36,7 +36,6 @@ extension TimeZonesTester on WidgetTester {
 void main() {
   group('TimeZonesPage', () {
     late TimeZoneRepository timeZoneRepository;
-
     setUp(() {
       timeZoneRepository = MockTimeZoneRepository();
       when(() => timeZoneRepository.getTimeZones())
@@ -56,16 +55,12 @@ void main() {
   group('TimeZonesView', () {
     late TimeZonesBloc timeZonesBloc;
     final currentTime = DateTime.now();
-    final timeZone1 = TimeZone(
-      location: 'madrid',
-      currentTime: currentTime,
-      timezoneAbbreviation: 'CEST',
-    );
-    final timeZones = TimeZones(items: [timeZone1]);
+    final timeZones = createTimeZonesStub();
 
     setUp(() {
       timeZonesBloc = MockTimeZonesBloc();
-      when(() => timeZonesBloc.state).thenReturn(TimeZonesState());
+      when(() => timeZonesBloc.state)
+          .thenReturn(TimeZonesState(timeSelected: currentTime));
     });
     setUpAll(() {
       registerFallbackValue<TimeZonesEvent>(FakeTimeZonesEvent());
@@ -73,7 +68,6 @@ void main() {
     });
 
     testWidgets('renders TimeZonesLoadingView when loading', (tester) async {
-      when(() => timeZonesBloc.state).thenReturn(TimeZonesState());
       await tester.pumpTimeZonesPage(
         const TimeZonesView(),
         timeZonesBloc: timeZonesBloc,
@@ -84,6 +78,7 @@ void main() {
     testWidgets('renders TimeZonesErrorView when error', (tester) async {
       when(() => timeZonesBloc.state).thenReturn(TimeZonesState(
         status: TimeZonesStatus.error,
+        timeSelected: currentTime,
       ));
       await tester.pumpTimeZonesPage(
         const TimeZonesView(),
@@ -96,6 +91,7 @@ void main() {
         (tester) async {
       when(() => timeZonesBloc.state).thenReturn(TimeZonesState(
         status: TimeZonesStatus.populated,
+        timeSelected: currentTime,
       ));
       await tester.pumpTimeZonesPage(
         const TimeZonesView(),
@@ -110,6 +106,7 @@ void main() {
         TimeZonesState(
           status: TimeZonesStatus.populated,
           timeZones: timeZones,
+          timeSelected: currentTime,
         ),
       );
       await tester.pumpTimeZonesPage(
@@ -124,6 +121,7 @@ void main() {
         TimeZonesState(
           status: TimeZonesStatus.populated,
           timeZones: timeZones,
+          timeSelected: currentTime,
         ),
       );
       await tester.pumpTimeZonesPage(
@@ -145,6 +143,7 @@ void main() {
         TimeZonesState(
           status: TimeZonesStatus.populated,
           timeZones: timeZones,
+          timeSelected: currentTime,
         ),
       );
       await tester.pumpTimeZonesPage(

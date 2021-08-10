@@ -21,7 +21,7 @@ void main() {
 
     setUp(() {
       timeZoneRepository = MockTimeZoneRepository();
-      when(() => timeZoneRepository.getCurrentTimeForLocation(any()))
+      when(() => timeZoneRepository.getTimeZoneForLocation(any()))
           .thenAnswer((_) async => Future.value());
       when(() => timeZoneRepository.getTimeZones())
           .thenAnswer((_) async => TimeZones());
@@ -41,7 +41,7 @@ void main() {
 
     setUp(() {
       timeZoneRepository = MockTimeZoneRepository();
-      when(() => timeZoneRepository.getCurrentTimeForLocation(any()))
+      when(() => timeZoneRepository.getTimeZoneForLocation(any()))
           .thenAnswer((_) async => Future.value());
       when(() => timeZoneRepository.getTimeZones())
           .thenAnswer((_) async => TimeZones());
