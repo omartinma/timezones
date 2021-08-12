@@ -25,6 +25,8 @@ class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
       yield* _mapTimeZonesAddRequestedToState(event);
     } else if (event is TimeZonesTimeSelected) {
       yield* _mapTimeZonesTimeSelectedToState(event);
+    } else if (event is TimeZonesDeleteRequested) {
+      yield* _mapTimeZonesDeleteRequestedToState(event);
     }
   }
 
@@ -71,6 +73,17 @@ class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
     );
     yield state.copyWith(
       timeSelected: event.time,
+      timeZones: newTimeZones,
+    );
+  }
+
+  Stream<TimeZonesState> _mapTimeZonesDeleteRequestedToState(
+    TimeZonesDeleteRequested event,
+  ) async* {
+    final newTimeZones =
+        await _timeZoneRepository.deleteTimeZone(event.timeZone);
+
+    yield state.copyWith(
       timeZones: newTimeZones,
     );
   }
