@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
+
 import 'package:location_api/location_api.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:storage/storage.dart';
@@ -26,18 +28,12 @@ void main() {
       woeid: 0,
     );
     final time = DateTime.now();
+
     final timeZoneApiResponse = TimeZoneApiResponse(
       datetime: time,
       timezoneAbbreviation: 'CEST',
       gmtOffset: 0,
     );
-    final timeZone = TimeZone(
-      location: location.title,
-      currentTime: timeZoneApiResponse.datetime,
-      timezoneAbbreviation: timeZoneApiResponse.timezoneAbbreviation,
-      gmtOffset: timeZoneApiResponse.gmtOffset,
-    );
-    final timeZones = TimeZones(items: [timeZone]);
     const timeZonesJson = '''
 {
    "items":[
@@ -50,11 +46,14 @@ void main() {
    ]
 }
 ''';
+    final timeZones =
+        TimeZones.fromJson(jsonDecode(timeZonesJson) as Map<String, dynamic>);
 
     setUp(() {
       timeZoneApi = MockTimeZoneApi();
       locationApi = MockLocationApi();
       storage = MockStorage();
+
       when(() => storage.read(key: cacheKey))
           .thenAnswer((_) => Future.value(timeZonesJson));
       when(() => storage.write(
@@ -63,7 +62,6 @@ void main() {
           )).thenAnswer(
         (_) => Future.value(),
       );
-
       when(() => timeZoneApi.getTimeZone(any(), any())).thenAnswer(
         (_) async => timeZoneApiResponse,
       );
@@ -79,6 +77,12 @@ void main() {
 
     group('getTimeZoneForLocation', () {
       const query = 'query';
+      final timeZone = TimeZone(
+        location: location.title,
+        currentTime: time,
+        timezoneAbbreviation: timeZoneApiResponse.timezoneAbbreviation,
+        gmtOffset: timeZoneApiResponse.gmtOffset,
+      );
       test('returns correct current time', () async {
         final response = await timeZoneRepository.getTimeZoneForLocation(query);
         expect(response, timeZone);
@@ -115,6 +119,34 @@ void main() {
           timeZoneRepository.convertTimeZones(timeZones, DateTime.now()),
           isNotNull,
         );
+      });
+    });
+
+    group('deleteTimeZone', () {
+      setUp(() async {
+        // To load cache first
+        await timeZoneRepository.getTimeZones();
+      });
+      test('completes', () async {
+        expect(
+          timeZoneRepository.deleteTimeZone(timeZones.items.first),
+          isNotNull,
+        );
+      });
+
+      test('deletes the item', () async {
+        final itemToDelete = timeZones.items.first;
+        final indexOfItemToDelete =
+            timeZoneRepository.timeZones.items.indexWhere(
+          (element) => itemToDelete.location == element.location,
+        );
+        expect(indexOfItemToDelete, isNot(-1));
+        await timeZoneRepository.deleteTimeZone(itemToDelete);
+        final indexOfItemToDelete1 =
+            timeZoneRepository.timeZones.items.indexWhere(
+          (element) => itemToDelete.location == element.location,
+        );
+        expect(indexOfItemToDelete1, -1);
       });
     });
   });

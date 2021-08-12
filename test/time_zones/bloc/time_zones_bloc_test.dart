@@ -168,5 +168,29 @@ void main() {
         ],
       );
     });
+
+    group('TimeZonesDeleteRequested', () {
+      blocTest<TimeZonesBloc, TimeZonesState>(
+        'emits state updated without the item to delete',
+        build: () {
+          when(() => timeZoneRepository.deleteTimeZone(timeZones.items.first))
+              .thenAnswer((_) async => timeZones.copyWith(items: []));
+          return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
+        },
+        seed: () => TimeZonesState(
+          timeZones: timeZones,
+          status: TimeZonesStatus.populated,
+        ),
+        act: (bloc) => bloc.add(
+          TimeZonesDeleteRequested(timeZone: timeZones.items.first),
+        ),
+        expect: () => <TimeZonesState>[
+          TimeZonesState(
+            timeZones: timeZones.copyWith(items: []),
+            status: TimeZonesStatus.populated,
+          )
+        ],
+      );
+    });
   });
 }

@@ -111,6 +111,17 @@ class TimeZoneRepository {
     return _timeZones = TimeZones(items: newItems);
   }
 
+  /// Add a new [TimeZone] and return the last updated [TimeZones]
+  /// for a selected time
+  Future<TimeZones> deleteTimeZone(TimeZone timeZone) async {
+    _timeZones = _timeZones.copyWith(
+      items: List<TimeZone>.from(_timeZones.items)
+        ..removeWhere((element) => element.location == timeZone.location),
+    );
+    await _refreshCache();
+    return _timeZones;
+  }
+
   Future<void> _refreshCache() async {
     await _storage.write(
       key: _timeZoneCacheKey,
