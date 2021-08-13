@@ -78,7 +78,6 @@ void main() {
     testWidgets('renders TimeZonesErrorView when error', (tester) async {
       when(() => timeZonesBloc.state).thenReturn(TimeZonesState(
         status: TimeZonesStatus.error,
-        timeSelected: currentTime,
       ));
       await tester.pumpTimeZonesPage(
         const TimeZonesView(),
@@ -91,7 +90,6 @@ void main() {
         (tester) async {
       when(() => timeZonesBloc.state).thenReturn(TimeZonesState(
         status: TimeZonesStatus.populated,
-        timeSelected: currentTime,
       ));
       await tester.pumpTimeZonesPage(
         const TimeZonesView(),
@@ -155,6 +153,26 @@ void main() {
       verify(
         () => timeZonesBloc.add(TimeZonesFetchRequested()),
       ).called(1);
+    });
+
+    testWidgets(
+        'shows duplicated error snackbar when errorAddingStatus [duplicated]',
+        (tester) async {
+      whenListen(
+        timeZonesBloc,
+        Stream.fromIterable(<TimeZonesState>[
+          TimeZonesState(errorAddingStatus: ErrorAddingStatus.duplicated),
+        ]),
+      );
+      await tester.pumpTimeZonesPage(
+        const TimeZonesView(),
+        timeZonesBloc: timeZonesBloc,
+      );
+      await tester.pump();
+      expect(
+        find.byKey(Key('timeZonesView_duplicatedTimeZone_snackBar')),
+        findsOneWidget,
+      );
     });
   });
 }

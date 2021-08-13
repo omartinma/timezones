@@ -14,7 +14,6 @@ class FakeTimeZones extends Fake implements TimeZones {}
 void main() {
   group('TimeZonesBloc', () {
     late TimeZoneRepository timeZoneRepository;
-    final currentTime = DateTime.now();
 
     final timeZones = createTimeZonesStub();
 
@@ -123,10 +122,11 @@ void main() {
       );
 
       blocTest<TimeZonesBloc, TimeZonesState>(
-        'emits [loading, error] when there is an exception',
+        'emits [loading, populated] with error [duplicated] '
+        'when there is DuplicatedTimeZoneException',
         build: () {
-          when(() => timeZoneRepository.addTimeZone('madrid', currentTime))
-              .thenThrow(Exception());
+          when(() => timeZoneRepository.addTimeZone('madrid', any()))
+              .thenThrow(DuplicatedTimeZoneException());
           return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
         },
         act: (bloc) => bloc.add(TimeZonesAddRequested(city: 'madrid')),
@@ -136,11 +136,17 @@ void main() {
             'status',
             TimeZonesStatus.loading,
           ),
-          isA<TimeZonesState>().having(
-            (state) => state.status,
-            'status',
-            TimeZonesStatus.error,
-          ),
+          isA<TimeZonesState>()
+              .having(
+                (state) => state.status,
+                'status',
+                TimeZonesStatus.populated,
+              )
+              .having(
+                (state) => state.errorAddingStatus,
+                'errorAddingStatus',
+                ErrorAddingStatus.duplicated,
+              )
         ],
       );
     });

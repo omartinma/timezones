@@ -1,5 +1,5 @@
 {
   "@@locale": "es",
-  "counterAppBarTitle": "Contador",
-  "emptyPageMessage": "¡Añade nuevos TimeZones!"
+  "emptyPageMessage": "¡Añade nuevos TimeZones!",
+  "duplicateTimeZone": "¡Ya tienes este Time Zone!"
 }
