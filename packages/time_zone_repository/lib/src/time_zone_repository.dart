@@ -59,15 +59,14 @@ class TimeZoneRepository {
     final cachedTimeZones = TimeZones.fromJson(
       jsonDecode(cachedTimeZonesJson) as Map<String, dynamic>,
     );
-    _timeZones = cachedTimeZones;
 
     /// We update in memory for the current time
     final timeZonesItems = <TimeZone>[];
-    for (final item in _timeZones.items) {
+    for (final item in cachedTimeZones.items) {
       final updatedTime = curDateTimeByUtcOffset(offset: item.gmtOffset);
       timeZonesItems.add(item.copyWith(currentTime: updatedTime));
     }
-    _timeZones = _timeZones.copyWith(items: timeZonesItems);
+    _timeZones = cachedTimeZones.copyWith(items: timeZonesItems);
 
     /// Refresh cache
     await _refreshCache();
@@ -84,11 +83,10 @@ class TimeZoneRepository {
       datetime: timeSelected.toUtc(),
     );
 
-    final newItems = [
-      ..._timeZones.items,
-      newTimeZone.copyWith(currentTime: convertedTime),
-    ];
-    _timeZones = TimeZones(items: newItems);
+    final newItems = List<TimeZone>.from(_timeZones.items)
+      ..add(newTimeZone.copyWith(currentTime: convertedTime));
+
+    _timeZones = _timeZones.copyWith(items: newItems);
     await _refreshCache();
     return _timeZones;
   }
@@ -108,7 +106,7 @@ class TimeZoneRepository {
       final newTimeZone = timeZone.copyWith(currentTime: convertedTime);
       newItems.add(newTimeZone);
     }
-    return _timeZones = TimeZones(items: newItems);
+    return _timeZones = _timeZones.copyWith(items: newItems);
   }
 
   /// Add a new [TimeZone] and return the last updated [TimeZones]
