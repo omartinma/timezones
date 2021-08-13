@@ -111,6 +111,21 @@ void main() {
       test('completes', () async {
         expect(timeZoneRepository.addTimeZone('title', time), completes);
       });
+
+      test('throws DuplicatedTimeZoneException if tryng to add a duplicate',
+          () async {
+        await timeZoneRepository.addTimeZone(
+          timeZones.items.first.location,
+          time,
+        );
+        expect(
+          timeZoneRepository.addTimeZone(
+            timeZones.items.first.location,
+            time,
+          ),
+          throwsA(isA<DuplicatedTimeZoneException>()),
+        );
+      });
     });
 
     group('convertTimeZones', () {

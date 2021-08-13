@@ -58,9 +58,11 @@ class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
         status: TimeZonesStatus.populated,
         timeZones: timeZones,
       );
-    } catch (e, st) {
-      yield state.copyWith(status: TimeZonesStatus.error);
-      addError(e, st);
+    } on DuplicatedTimeZoneException {
+      yield state.copyWith(
+        errorAddingStatus: ErrorAddingStatus.duplicated,
+        status: TimeZonesStatus.populated,
+      );
     }
   }
 

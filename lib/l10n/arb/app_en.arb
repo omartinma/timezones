@@ -1,11 +1,11 @@
 {
   "@@locale": "en",
-  "counterAppBarTitle": "Counter",
-  "@counterAppBarTitle": {
-    "description": "Text shown in the AppBar of the Counter Page"
-  },
   "emptyPageMessage": "Add new TimeZones!",
   "@emptyPageMessage": {
     "description": "Text shown in the empty page"
+  },
+  "duplicateTimeZone": "You have already this Time Zone!",
+  "@duplicateTimeZone": {
+    "description": "Text shown when trying to add an existing time zone"
   }
 }

@@ -38,9 +38,9 @@ class SelectTimeView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text('Time Selected'),
-            BlocSelector<TimeZonesBloc, TimeZonesState, DateTime>(
-              selector: (state) => state.timeSelected!,
-              builder: (context, state) => Text(state.toHours()),
+            BlocSelector<TimeZonesBloc, TimeZonesState, DateTime?>(
+              selector: (state) => state.timeSelected,
+              builder: (context, state) => Text(state?.toHours() ?? ''),
             )
           ],
         ),

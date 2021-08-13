@@ -7,6 +7,9 @@ import 'package:storage/storage.dart';
 import 'package:time_zone_api/time_zone_api.dart';
 import 'package:time_zone_repository/time_zone_repository.dart';
 
+/// Exception thrown when trying to add a time zone that is added already
+class DuplicatedTimeZoneException implements Exception {}
+
 /// {@template time_zone_repository}
 /// Repository for time zone
 /// {@endtemplate}
@@ -76,8 +79,12 @@ class TimeZoneRepository {
 
   /// Add a new [TimeZone] and return the last updated [TimeZones]
   /// for a selected time
+  /// Throws [DuplicatedTimeZoneException] if this [TimeZone] exists already
   Future<TimeZones> addTimeZone(String query, DateTime timeSelected) async {
     final newTimeZone = await getTimeZoneForLocation(query);
+    if (_existsTimeZone(newTimeZone)) {
+      throw DuplicatedTimeZoneException();
+    }
     final convertedTime = dateTimeToOffset(
       offset: newTimeZone.gmtOffset,
       datetime: timeSelected.toUtc(),
@@ -124,6 +131,12 @@ class TimeZoneRepository {
     await _storage.write(
       key: _timeZoneCacheKey,
       value: jsonEncode(_timeZones.toJson()),
+    );
+  }
+
+  bool _existsTimeZone(TimeZone timeZone) {
+    return _timeZones.items.any(
+      (element) => element.location == timeZone.location,
     );
   }
 }
