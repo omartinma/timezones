@@ -11,6 +11,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:time_zone_repository/time_zone_repository.dart';
 import 'package:timezones/home/home.dart';
 import 'package:timezones/l10n/l10n.dart';
+import 'package:timezones/select_time/select_time.dart';
 
 class App extends StatelessWidget {
   const App({
@@ -27,7 +28,12 @@ class App extends StatelessWidget {
       providers: [
         RepositoryProvider.value(value: _timeZoneRepository),
       ],
-      child: const AppView(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: SelectTimeBloc()),
+        ],
+        child: const AppView(),
+      ),
     );
   }
 }
@@ -38,7 +44,15 @@ class AppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+          primaryColor: Colors.blue.shade900,
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+            backgroundColor: Colors.blue.shade900,
+          ),
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            selectedItemColor: Colors.blue.shade900,
+          )),
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
