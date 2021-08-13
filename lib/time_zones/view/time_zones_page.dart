@@ -34,6 +34,14 @@ class TimeZonesView extends StatelessWidget {
                 content: Text(l10n.duplicateTimeZone),
               ),
             );
+          } else if (state.errorAddingStatus == ErrorAddingStatus.notFound) {
+            final l10n = context.l10n;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                key: const Key('timeZonesView_notFoundTimeZone_snackBar'),
+                content: Text(l10n.notFoundTimeZone),
+              ),
+            );
           }
         },
         builder: (context, state) {

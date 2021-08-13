@@ -1,5 +1,6 @@
 {
   "@@locale": "es",
   "emptyPageMessage": "¡Añade nuevos TimeZones!",
-  "duplicateTimeZone": "¡Ya tienes este Time Zone!"
+  "duplicateTimeZone": "¡Ya tienes este Time Zone!",
+  "notFoundTimeZone": "No se encuentra esta localización"
 }
