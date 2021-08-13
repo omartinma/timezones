@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:time_zone_repository/time_zone_repository.dart';
+import 'package:timezones/home/home.dart';
 import 'package:timezones/l10n/l10n.dart';
-import 'package:timezones/time_zones/time_zones.dart';
 
 class App extends StatelessWidget {
   const App({
@@ -44,7 +44,7 @@ class AppView extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const TimeZonesPage(),
+      home: const HomePage(),
     );
   }
 }
