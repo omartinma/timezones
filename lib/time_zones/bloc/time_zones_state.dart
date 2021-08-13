@@ -6,9 +6,7 @@ enum TimeZonesStatus {
   error,
 }
 
-enum ErrorAddingStatus {
-  duplicated,
-}
+enum ErrorAddingStatus { duplicated, notFound }
 
 class TimeZonesState extends Equatable {
   const TimeZonesState({

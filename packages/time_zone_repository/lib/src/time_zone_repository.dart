@@ -10,6 +10,9 @@ import 'package:time_zone_repository/time_zone_repository.dart';
 /// Exception thrown when trying to add a time zone that is added already
 class DuplicatedTimeZoneException implements Exception {}
 
+/// Exception thrown when trying to add a time zone that is not found
+class NotFoundException implements Exception {}
+
 /// {@template time_zone_repository}
 /// Repository for time zone
 /// {@endtemplate}
@@ -34,18 +37,23 @@ class TimeZoneRepository {
   TimeZones _timeZones = const TimeZones();
 
   /// Returns a [TimeZone] from a query based on location
+  /// Throws [NotFoundException] if query is not found
   Future<TimeZone> getTimeZoneForLocation(String query) async {
-    final location = await _locationApi.locationSearch(query);
-    final timeZoneApiResponse = await _timeZoneApi.getTimeZone(
-      location.latLng.longitude,
-      location.latLng.latitude,
-    );
-    return TimeZone(
-      location: location.title,
-      currentTime: timeZoneApiResponse.datetime,
-      timezoneAbbreviation: timeZoneApiResponse.timezoneAbbreviation,
-      gmtOffset: timeZoneApiResponse.gmtOffset,
-    );
+    try {
+      final location = await _locationApi.locationSearch(query);
+      final timeZoneApiResponse = await _timeZoneApi.getTimeZone(
+        location.latLng.longitude,
+        location.latLng.latitude,
+      );
+      return TimeZone(
+        location: location.title,
+        currentTime: timeZoneApiResponse.datetime,
+        timezoneAbbreviation: timeZoneApiResponse.timezoneAbbreviation,
+        gmtOffset: timeZoneApiResponse.gmtOffset,
+      );
+    } catch (_) {
+      throw NotFoundException();
+    }
   }
 
   /// Returns [TimeZones]
@@ -80,8 +88,8 @@ class TimeZoneRepository {
   /// Add a new [TimeZone] and return the last updated [TimeZones]
   /// for a selected time
   /// Throws [DuplicatedTimeZoneException] if this [TimeZone] exists already
-  Future<TimeZones> addTimeZone(String query, DateTime timeSelected) async {
-    final newTimeZone = await getTimeZoneForLocation(query);
+  Future<TimeZones> addTimeZone(
+      TimeZone newTimeZone, DateTime timeSelected) async {
     if (_existsTimeZone(newTimeZone)) {
       throw DuplicatedTimeZoneException();
     }

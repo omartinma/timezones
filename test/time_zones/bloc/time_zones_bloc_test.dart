@@ -93,11 +93,18 @@ void main() {
     });
 
     group('TimeZonesAddRequested', () {
+      final timeZone = createTimeZoneStub();
+      setUp(() {
+        when(
+          () => timeZoneRepository.getTimeZoneForLocation(any()),
+        ).thenAnswer((_) async => timeZone);
+      });
       blocTest<TimeZonesBloc, TimeZonesState>(
         'emits [loading, populates] when success',
         build: () {
-          when(() => timeZoneRepository.addTimeZone('madrid', any()))
-              .thenAnswer((_) async => timeZones);
+          when(
+            () => timeZoneRepository.addTimeZone(timeZone, any()),
+          ).thenAnswer((_) async => timeZones);
           return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
         },
         act: (bloc) => bloc.add(TimeZonesAddRequested(city: 'madrid')),
@@ -125,7 +132,7 @@ void main() {
         'emits [loading, populated] with error [duplicated] '
         'when there is DuplicatedTimeZoneException',
         build: () {
-          when(() => timeZoneRepository.addTimeZone('madrid', any()))
+          when(() => timeZoneRepository.addTimeZone(timeZone, any()))
               .thenThrow(DuplicatedTimeZoneException());
           return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
         },
@@ -146,6 +153,35 @@ void main() {
                 (state) => state.errorAddingStatus,
                 'errorAddingStatus',
                 ErrorAddingStatus.duplicated,
+              )
+        ],
+      );
+
+      blocTest<TimeZonesBloc, TimeZonesState>(
+        'emits [loading, populated] with error [notFound] '
+        'when there is NotFoundException',
+        build: () {
+          when(() => timeZoneRepository.addTimeZone(timeZone, any()))
+              .thenThrow(NotFoundException());
+          return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
+        },
+        act: (bloc) => bloc.add(TimeZonesAddRequested(city: 'madrid')),
+        expect: () => [
+          isA<TimeZonesState>().having(
+            (state) => state.status,
+            'status',
+            TimeZonesStatus.loading,
+          ),
+          isA<TimeZonesState>()
+              .having(
+                (state) => state.status,
+                'status',
+                TimeZonesStatus.populated,
+              )
+              .having(
+                (state) => state.errorAddingStatus,
+                'errorAddingStatus',
+                ErrorAddingStatus.notFound,
               )
         ],
       );

@@ -7,5 +7,9 @@
   "duplicateTimeZone": "You have already this Time Zone!",
   "@duplicateTimeZone": {
     "description": "Text shown when trying to add an existing time zone"
+  },
+  "notFoundTimeZone": "We can not find this location",
+  "@notFoundTimeZone": {
+    "description": "Text shown when no location found"
   }
 }

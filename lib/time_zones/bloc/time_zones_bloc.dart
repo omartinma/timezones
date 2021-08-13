@@ -50,8 +50,10 @@ class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
   ) async* {
     yield state.copyWith(status: TimeZonesStatus.loading);
     try {
+      final timeZone =
+          await _timeZoneRepository.getTimeZoneForLocation(event.city);
       final timeZones = await _timeZoneRepository.addTimeZone(
-        event.city,
+        timeZone,
         state.timeSelected!,
       );
       yield state.copyWith(
@@ -61,6 +63,11 @@ class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
     } on DuplicatedTimeZoneException {
       yield state.copyWith(
         errorAddingStatus: ErrorAddingStatus.duplicated,
+        status: TimeZonesStatus.populated,
+      );
+    } on NotFoundException {
+      yield state.copyWith(
+        errorAddingStatus: ErrorAddingStatus.notFound,
         status: TimeZonesStatus.populated,
       );
     }

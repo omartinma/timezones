@@ -174,5 +174,25 @@ void main() {
         findsOneWidget,
       );
     });
+
+    testWidgets(
+        'shows not found error snackbar when errorAddingStatus [notFound]',
+        (tester) async {
+      whenListen(
+        timeZonesBloc,
+        Stream.fromIterable(<TimeZonesState>[
+          TimeZonesState(errorAddingStatus: ErrorAddingStatus.notFound),
+        ]),
+      );
+      await tester.pumpTimeZonesPage(
+        const TimeZonesView(),
+        timeZonesBloc: timeZonesBloc,
+      );
+      await tester.pump();
+      expect(
+        find.byKey(Key('timeZonesView_notFoundTimeZone_snackBar')),
+        findsOneWidget,
+      );
+    });
   });
 }

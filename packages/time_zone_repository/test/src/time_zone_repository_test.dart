@@ -89,6 +89,14 @@ void main() {
         verify(() => locationApi.locationSearch(query)).called(1);
         verify(() => timeZoneApi.getTimeZone(0, 0)).called(1);
       });
+
+      test('throws NotFoundException if there is an error', () async {
+        when(() => locationApi.locationSearch(query)).thenThrow(Exception());
+        expect(
+          timeZoneRepository.getTimeZoneForLocation(query),
+          throwsA(isA<NotFoundException>()),
+        );
+      });
     });
 
     group('getTimeZones', () {
@@ -109,18 +117,21 @@ void main() {
 
     group('addTimeZone', () {
       test('completes', () async {
-        expect(timeZoneRepository.addTimeZone('title', time), completes);
+        expect(
+          timeZoneRepository.addTimeZone(timeZones.items.first, time),
+          completes,
+        );
       });
 
       test('throws DuplicatedTimeZoneException if tryng to add a duplicate',
           () async {
         await timeZoneRepository.addTimeZone(
-          timeZones.items.first.location,
+          timeZones.items.first,
           time,
         );
         expect(
           timeZoneRepository.addTimeZone(
-            timeZones.items.first.location,
+            timeZones.items.first,
             time,
           ),
           throwsA(isA<DuplicatedTimeZoneException>()),
