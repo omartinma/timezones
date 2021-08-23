@@ -62,6 +62,12 @@ class _LiveClockState extends State<LiveClock> {
   late DateTime _currentTime;
 
   @override
+  void didUpdateWidget(covariant LiveClock oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _currentTime = widget.initialDate;
+  }
+
+  @override
   void initState() {
     super.initState();
     _currentTime = widget.initialDate;
