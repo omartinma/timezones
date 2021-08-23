@@ -5,8 +5,8 @@ void main() {
   group('SelectTimeState', () {
     test('supports value comparisons', () {
       final time = DateTime.now();
-      final instanceA = SelectTimeState(time);
-      final instanceB = SelectTimeState(time);
+      final instanceA = SelectTimeState(time, time.timeZoneName);
+      final instanceB = instanceA.copyWith();
       expect(instanceA, instanceB);
     });
   });

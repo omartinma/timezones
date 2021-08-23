@@ -11,7 +11,7 @@ void main() {
         build: () => SelectTimeBloc(),
         act: (bloc) => bloc.add(SelectTimeSelected(time)),
         expect: () => [
-          SelectTimeState(time),
+          SelectTimeState(time, time.timeZoneName),
         ],
       );
     });

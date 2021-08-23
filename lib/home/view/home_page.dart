@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var _pageSelected = 0;
-  static const headerSize = 100.0;
+  static const headerSize = 80.0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

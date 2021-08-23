@@ -60,8 +60,9 @@ void main() {
       timeZoneRepository = MockTimeZoneRepository();
       when(() => timeZoneRepository.getTimeZones())
           .thenAnswer((_) async => TimeZones());
+      final time = DateTime.now();
       when(() => selectTimeBloc.state).thenReturn(
-        SelectTimeState(DateTime.now()),
+        SelectTimeState(time, time.timeZoneName),
       );
     });
 
@@ -87,11 +88,12 @@ void main() {
     setUp(() {
       timeZonesBloc = MockTimeZonesBloc();
       selectTimeBloc = MockSelectTimeBloc();
+      final time = DateTime.now();
 
       when(() => timeZonesBloc.state)
           .thenReturn(TimeZonesState(timeSelected: currentTime));
       when(() => selectTimeBloc.state).thenReturn(
-        SelectTimeState(DateTime.now()),
+        SelectTimeState(time, time.timeZoneName),
       );
     });
 
@@ -223,7 +225,7 @@ void main() {
       whenListen(
         selectTimeBloc,
         Stream.fromIterable(<SelectTimeState>[
-          SelectTimeState(time),
+          SelectTimeState(time, time.timeZoneName),
         ]),
       );
       await tester.pumpTimeZonesPage(
