@@ -47,8 +47,10 @@ void main() {
     setUp(() {
       selectTimeBloc = MockSelectTimeBloc();
       timeZoneRepository = MockTimeZoneRepository();
+      final time = DateTime.now();
+
       when(() => selectTimeBloc.state).thenReturn(
-        SelectTimeState(DateTime.now()),
+        SelectTimeState(time, time.timeZoneName),
       );
       when(() => timeZoneRepository.getTimeZones())
           .thenAnswer((_) async => TimeZones());

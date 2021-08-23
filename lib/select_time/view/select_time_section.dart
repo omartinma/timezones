@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_zones_ui/time_zones_ui.dart';
@@ -12,11 +14,11 @@ class SelectTimeSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.blue.shade900,
-      padding: const EdgeInsets.symmetric(horizontal: 15),
       height: height,
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       child: SafeArea(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             BlocSelector<SelectTimeBloc, SelectTimeState, DateTime>(
               selector: (state) => state.timeSelected,
@@ -45,6 +47,24 @@ class SelectTimeSection extends StatelessWidget {
                     }
                   },
                   child: LiveClock.big(initialDate: timeSelected),
+                );
+              },
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            BlocSelector<SelectTimeBloc, SelectTimeState, String>(
+              selector: (state) => state.timeZoneName,
+              builder: (context, timeZoneName) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Text(
+                    timeZoneName,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 );
               },
             )

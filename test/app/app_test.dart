@@ -58,12 +58,13 @@ void main() {
     setUp(() {
       timeZoneRepository = MockTimeZoneRepository();
       selectTimeBloc = MockSelectTimeBloc();
+      final time = DateTime.now();
       when(() => timeZoneRepository.getTimeZoneForLocation(any()))
           .thenAnswer((_) async => Future.value());
       when(() => timeZoneRepository.getTimeZones())
           .thenAnswer((_) async => TimeZones());
       when(() => selectTimeBloc.state).thenReturn(
-        SelectTimeState(DateTime.now()),
+        SelectTimeState(time, time.timeZoneName),
       );
     });
 

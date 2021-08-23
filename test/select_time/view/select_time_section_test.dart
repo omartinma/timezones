@@ -39,7 +39,9 @@ void main() {
 
     setUp(() {
       selectTimeBloc = MockSelectTimeBloc();
-      when(() => selectTimeBloc.state).thenReturn(SelectTimeState(currentTime));
+      when(() => selectTimeBloc.state).thenReturn(
+        SelectTimeState(currentTime, currentTime.timeZoneName),
+      );
     });
 
     setUpAll(() {
