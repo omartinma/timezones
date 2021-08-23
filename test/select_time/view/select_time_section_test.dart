@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:timezones/extensions/extensions.dart';
+import 'package:time_zones_ui/time_zones_ui.dart';
 import 'package:timezones/select_time/select_time.dart';
 
 import '../../helpers/helpers.dart';

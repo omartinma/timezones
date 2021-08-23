@@ -3,7 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:time_zone_repository/time_zone_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timezones/time_zones/time_zones.dart';
-import 'package:timezones/extensions/extensions.dart';
+import 'package:time_zones_ui/time_zones_ui.dart';
 
 class TimeZoneTile extends StatelessWidget {
   const TimeZoneTile({Key? key, required this.timeZone}) : super(key: key);
@@ -28,7 +28,7 @@ class TimeZoneTile extends StatelessWidget {
       ],
       child: ListTile(
         title: Text(timeZone.location),
-        trailing: Text(timeZone.currentTime.toHours()),
+        trailing: LiveClock.regular(initialDate: timeZone.currentTime),
       ),
     );
   }

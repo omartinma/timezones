@@ -544,6 +544,13 @@ packages:
       relative: true
     source: path
     version: "0.0.0"
+  time_zones_ui:
+    dependency: "direct main"
+    description:
+      path: "packages/time_zones_ui"
+      relative: true
+    source: path
+    version: "0.0.0"
   typed_data:
     dependency: transitive
     description:

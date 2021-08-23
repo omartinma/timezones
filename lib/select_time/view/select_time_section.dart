@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_zones_ui/time_zones_ui.dart';
 import 'package:timezones/select_time/select_time.dart';
-import 'package:timezones/extensions/extensions.dart';
 
 class SelectTimeSection extends StatelessWidget {
   const SelectTimeSection({Key? key, required this.height}) : super(key: key);
@@ -44,14 +44,7 @@ class SelectTimeSection extends StatelessWidget {
                       );
                     }
                   },
-                  child: Text(
-                    timeSelected.toHours(),
-                    style: const TextStyle(
-                      fontSize: 32,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child: LiveClock.big(initialDate: timeSelected),
                 );
               },
             )

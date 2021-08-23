@@ -25,6 +25,8 @@ dependencies:
     path: packages/time_zone_api
   time_zone_repository:
     path: packages/time_zone_repository
+  time_zones_ui:
+    path: packages/time_zones_ui
 
 dev_dependencies:
   bloc_test: ^8.0.0
