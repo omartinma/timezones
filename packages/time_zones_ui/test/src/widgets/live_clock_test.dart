@@ -36,7 +36,7 @@ void main() {
       expect(find.text(currentTime.toHours()), findsOneWidget);
     });
 
-    testWidgets('updates time correctly', (tester) async {
+    testWidgets('updates time correctly when timer increments', (tester) async {
       final currentTime = DateTime.now();
       await tester.pumpLiveClock(LiveClock.big(
         initialDate: DateTime.now(),
@@ -46,6 +46,21 @@ void main() {
       await tester.pump(increment);
       final newTime = currentTime.add(increment);
       expect(find.text(newTime.toHours()), findsOneWidget);
+    });
+
+    testWidgets('updates widget properties if updated', (tester) async {
+      final firstTime = DateTime.now();
+      await tester.pumpLiveClock(
+        LiveClock.big(key: const Key('unique'), initialDate: firstTime),
+      );
+      expect(find.text(firstTime.toHours()), findsOneWidget);
+
+      final secondTime = firstTime.add(const Duration(minutes: 60));
+      await tester.pumpLiveClock(
+        LiveClock.big(key: const Key('unique'), initialDate: secondTime),
+      );
+      expect(find.text(firstTime.toHours()), findsNothing);
+      expect(find.text(secondTime.toHours()), findsOneWidget);
     });
   });
 }
