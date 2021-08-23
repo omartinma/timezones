@@ -33,7 +33,7 @@ class SelectTimeSection extends StatelessWidget {
                       final now = DateTime.now();
                       bloc.add(
                         SelectTimeSelected(
-                          time: DateTime(
+                          DateTime(
                             now.year,
                             now.month,
                             now.day,

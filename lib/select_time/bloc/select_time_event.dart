@@ -5,7 +5,7 @@ abstract class SelectTimeEvent extends Equatable {
 }
 
 class SelectTimeSelected extends SelectTimeEvent {
-  const SelectTimeSelected({required this.time});
+  const SelectTimeSelected(this.time);
 
   final DateTime time;
 

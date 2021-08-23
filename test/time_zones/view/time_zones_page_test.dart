@@ -217,5 +217,22 @@ void main() {
         findsOneWidget,
       );
     });
+
+    testWidgets('updates time', (tester) async {
+      final time = DateTime.now();
+      whenListen(
+        selectTimeBloc,
+        Stream.fromIterable(<SelectTimeState>[
+          SelectTimeState(time),
+        ]),
+      );
+      await tester.pumpTimeZonesPage(
+        const TimeZonesView(),
+        timeZonesBloc: timeZonesBloc,
+        selectTimeBloc: selectTimeBloc,
+      );
+      await tester.pump();
+      verify(() => timeZonesBloc.add(TimeZonesTimeSelected(time: time)));
+    });
   });
 }
