@@ -67,8 +67,10 @@ class _LiveClockState extends State<LiveClock> {
     _currentTime = widget.initialDate;
     _timer = Timer(
       const Duration(minutes: 1) -
-          Duration(seconds: _currentTime.second) -
-          Duration(milliseconds: _currentTime.millisecond),
+          Duration(
+            seconds: _currentTime.second,
+            milliseconds: _currentTime.millisecond,
+          ),
       _updateTime,
     );
   }
