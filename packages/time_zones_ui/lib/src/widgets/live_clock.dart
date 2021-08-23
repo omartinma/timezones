@@ -12,7 +12,7 @@ class LiveClock extends StatefulWidget {
   const LiveClock({
     Key? key,
     required DateTime initialDate,
-    required TextStyle textStyle,
+    TextStyle textStyle = const TextStyle(),
   }) : this._(key: key, initialDate: initialDate, textStyle: textStyle);
 
   /// Constructor for big [LiveClock]
