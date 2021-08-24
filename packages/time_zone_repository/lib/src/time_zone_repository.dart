@@ -23,9 +23,11 @@ class TimeZoneRepository {
     required TimeZoneApi timeZoneApi,
     required LocationApi locationApi,
     required Storage storage,
+    String? timeZoneName,
   })  : _timeZoneApi = timeZoneApi,
         _locationApi = locationApi,
-        _storage = storage;
+        _storage = storage,
+        timeZoneNameSelected = timeZoneName ?? DateTime.now().timeZoneName;
 
   final TimeZoneApi _timeZoneApi;
   final LocationApi _locationApi;
@@ -40,7 +42,7 @@ class TimeZoneRepository {
   double get offsetSelected => timeZoneOffsets[timeZoneNameSelected] ?? 0;
 
   /// Exposes last selected global time zone name
-  String timeZoneNameSelected = DateTime.now().timeZoneName;
+  String timeZoneNameSelected;
 
   /// Returns a [TimeZone] from a query based on location
   /// Throws [NotFoundException] if query is not found

@@ -73,6 +73,7 @@ void main() {
         timeZoneApi: timeZoneApi,
         locationApi: locationApi,
         storage: storage,
+        timeZoneName: 'CEST',
       );
     });
 
