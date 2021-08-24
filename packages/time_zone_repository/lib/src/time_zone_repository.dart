@@ -96,9 +96,10 @@ class TimeZoneRepository {
     if (_existsTimeZone(newTimeZone)) {
       throw DuplicatedTimeZoneException();
     }
-    final convertedTime = dateTimeToOffset(
-      offset: newTimeZone.gmtOffset,
-      datetime: timeSelected.toUtc(),
+    final convertedTime = _convertDateTime(
+      fromOffset: timeZoneOffsets[timeZoneNameSelected] ?? 0,
+      toOffSet: newTimeZone.gmtOffset,
+      time: timeSelected,
     );
 
     final newItems = List<TimeZone>.from(_timeZones.items)
