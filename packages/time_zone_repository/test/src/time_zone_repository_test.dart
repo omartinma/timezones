@@ -8,6 +8,7 @@ import 'package:storage/storage.dart';
 import 'package:test/test.dart';
 import 'package:time_zone_api/time_zone_api.dart';
 import 'package:time_zone_repository/time_zone_repository.dart';
+import 'package:instant/instant.dart';
 
 class MockTimeZoneApi extends Mock implements TimeZoneApi {}
 
@@ -77,12 +78,14 @@ void main() {
 
     group('getTimeZoneForLocation', () {
       const query = 'query';
+      final offsetSelected = timeZoneOffsets['CEST'] ?? 0;
+
       final timeZone = TimeZone(
         location: location.title,
         currentTime: time,
         timezoneAbbreviation: timeZoneApiResponse.timezoneAbbreviation,
         gmtOffset: timeZoneApiResponse.gmtOffset,
-        offset: 0,
+        offset: timeZoneApiResponse.gmtOffset - offsetSelected,
       );
 
       test('returns correct current time', () async {
