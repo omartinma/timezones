@@ -105,8 +105,8 @@ class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
       event.timeZoneName,
     );
     yield state.copyWith(
-      timeSelected: timeSelected,
       timeZones: newTimeZones,
+      timeZoneName: event.timeZoneName,
     );
   }
 

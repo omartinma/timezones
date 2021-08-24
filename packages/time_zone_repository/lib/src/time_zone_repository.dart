@@ -118,9 +118,10 @@ class TimeZoneRepository {
     final newItems = <TimeZone>[];
 
     for (final timeZone in timeZones.items) {
-      final convertedTime = dateTimeToOffset(
-        offset: timeZone.gmtOffset,
-        datetime: timeSelected.toUtc(),
+      final convertedTime = _convertDateTime(
+        fromOffset: timeZoneOffsets[timeZoneName] ?? 0,
+        toOffSet: timeZone.gmtOffset,
+        time: timeSelected,
       );
 
       final newTimeZone = timeZone.copyWith(currentTime: convertedTime);
@@ -151,5 +152,14 @@ class TimeZoneRepository {
     return _timeZones.items.any(
       (element) => element.location == timeZone.location,
     );
+  }
+
+  DateTime _convertDateTime({
+    required double fromOffset,
+    required double toOffSet,
+    required DateTime time,
+  }) {
+    final offset = toOffSet - fromOffset;
+    return time.add(Duration(hours: offset.toInt()));
   }
 }
