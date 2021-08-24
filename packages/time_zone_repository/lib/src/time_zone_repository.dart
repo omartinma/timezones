@@ -36,8 +36,11 @@ class TimeZoneRepository {
   TimeZones get timeZones => _timeZones;
   TimeZones _timeZones = const TimeZones();
 
+  /// Returns the offset for the current selected time zone
+  double get offsetSelected => timeZoneOffsets[timeZoneNameSelected] ?? 0;
+
   /// Exposes last selected global time zone name
-  String timeZoneNameSelected = 'CEST';
+  String timeZoneNameSelected = DateTime.now().timeZoneName;
 
   /// Returns a [TimeZone] from a query based on location
   /// Throws [NotFoundException] if query is not found
@@ -53,6 +56,7 @@ class TimeZoneRepository {
         currentTime: timeZoneApiResponse.datetime,
         timezoneAbbreviation: timeZoneApiResponse.timezoneAbbreviation,
         gmtOffset: timeZoneApiResponse.gmtOffset,
+        offset: timeZoneApiResponse.gmtOffset - offsetSelected,
       );
     } catch (_) {
       throw NotFoundException();

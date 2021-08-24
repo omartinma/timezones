@@ -14,6 +14,7 @@ TimeZone _$TimeZoneFromJson(Map<String, dynamic> json) {
     currentTime: DateTime.parse(json['currentTime'] as String),
     timezoneAbbreviation: json['timezoneAbbreviation'] as String,
     gmtOffset: (json['gmtOffset'] as num).toDouble(),
+    offset: (json['offset'] as num?)?.toDouble() ?? 0,
   );
 }
 
@@ -22,4 +23,5 @@ Map<String, dynamic> _$TimeZoneToJson(TimeZone instance) => <String, dynamic>{
       'currentTime': instance.currentTime.toIso8601String(),
       'timezoneAbbreviation': instance.timezoneAbbreviation,
       'gmtOffset': instance.gmtOffset,
+      'offset': instance.offset,
     };

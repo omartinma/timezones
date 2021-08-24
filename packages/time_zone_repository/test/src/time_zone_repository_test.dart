@@ -28,12 +28,11 @@ void main() {
       woeid: 0,
     );
     final time = DateTime.now();
-    const timeZoneName = 'CEST';
 
     final timeZoneApiResponse = TimeZoneApiResponse(
       datetime: time,
       timezoneAbbreviation: 'CEST',
-      gmtOffset: 0,
+      gmtOffset: 2,
     );
     const timeZonesJson = '''
 {
@@ -83,7 +82,9 @@ void main() {
         currentTime: time,
         timezoneAbbreviation: timeZoneApiResponse.timezoneAbbreviation,
         gmtOffset: timeZoneApiResponse.gmtOffset,
+        offset: 0,
       );
+
       test('returns correct current time', () async {
         final response = await timeZoneRepository.getTimeZoneForLocation(query);
         expect(response, timeZone);
@@ -122,7 +123,6 @@ void main() {
           timeZoneRepository.addTimeZone(
             timeZones.items.first,
             time,
-            timeZoneName,
           ),
           completes,
         );
@@ -130,11 +130,9 @@ void main() {
 
       test('throws DuplicatedTimeZoneException if tryng to add a duplicate',
           () async {
-        await timeZoneRepository.addTimeZone(
-            timeZones.items.first, time, timeZoneName);
+        await timeZoneRepository.addTimeZone(timeZones.items.first, time);
         expect(
-          timeZoneRepository.addTimeZone(
-              timeZones.items.first, time, timeZoneName),
+          timeZoneRepository.addTimeZone(timeZones.items.first, time),
           throwsA(isA<DuplicatedTimeZoneException>()),
         );
       });
@@ -146,7 +144,6 @@ void main() {
           timeZoneRepository.convertTimeZones(
             timeZones,
             DateTime.now(),
-            timeZoneName,
           ),
           isNotNull,
         );
