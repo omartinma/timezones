@@ -77,6 +77,17 @@ void main() {
       );
     });
 
+    test('can instantiate without time zone name', () {
+      expect(
+        TimeZoneRepository(
+          timeZoneApi: timeZoneApi,
+          locationApi: locationApi,
+          storage: storage,
+        ),
+        isNotNull,
+      );
+    });
+
     group('getTimeZoneForLocation', () {
       const query = 'query';
       final offsetSelected = timeZoneOffsets['CEST'] ?? 0;
