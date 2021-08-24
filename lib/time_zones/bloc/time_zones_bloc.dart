@@ -40,10 +40,10 @@ class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
   Stream<TimeZonesState> _mapTimeZonesFetchRequestedToState() async* {
     yield state.copyWith(status: TimeZonesStatus.loading);
     try {
-      final timeZone = await _timeZoneRepository.getTimeZones();
+      final timeZones = await _timeZoneRepository.getTimeZones();
       yield state.copyWith(
         status: TimeZonesStatus.populated,
-        timeZones: timeZone,
+        timeZones: timeZones,
         timeSelected: DateTime.now(),
       );
     } catch (e, st) {
@@ -62,7 +62,6 @@ class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
       final timeZones = await _timeZoneRepository.addTimeZone(
         timeZone,
         state.timeSelected!,
-        state.timeZoneName!,
       );
       yield state.copyWith(
         status: TimeZonesStatus.populated,
@@ -87,7 +86,6 @@ class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
     final newTimeZones = _timeZoneRepository.convertTimeZones(
       state.timeZones,
       event.time,
-      state.timeZoneName ?? DateTime.now().timeZoneName,
     );
     yield state.copyWith(
       timeSelected: event.time,
@@ -98,14 +96,14 @@ class TimeZonesBloc extends Bloc<TimeZonesEvent, TimeZonesState> {
   Stream<TimeZonesState> _mapTimeZonesTimeZoneNameSelectedToState(
     TimeZonesTimeZoneNameSelected event,
   ) async* {
-    final timeSelected = state.timeSelected ?? DateTime.now();
-    final newTimeZones = _timeZoneRepository.convertTimeZones(
+    _timeZoneRepository.timeZoneNameSelected = event.timeZoneName;
+    final currentTimeSelected = state.timeSelected ?? DateTime.now();
+    final convertedTimeZones = _timeZoneRepository.convertTimeZones(
       state.timeZones,
-      timeSelected,
-      event.timeZoneName,
+      currentTimeSelected,
     );
     yield state.copyWith(
-      timeZones: newTimeZones,
+      timeZones: convertedTimeZones,
       timeZoneName: event.timeZoneName,
     );
   }

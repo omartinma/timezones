@@ -36,6 +36,9 @@ class TimeZoneRepository {
   TimeZones get timeZones => _timeZones;
   TimeZones _timeZones = const TimeZones();
 
+  /// Exposes last selected global time zone name
+  String timeZoneNameSelected = 'CEST';
+
   /// Returns a [TimeZone] from a query based on location
   /// Throws [NotFoundException] if query is not found
   Future<TimeZone> getTimeZoneForLocation(String query) async {
@@ -91,7 +94,6 @@ class TimeZoneRepository {
   Future<TimeZones> addTimeZone(
     TimeZone newTimeZone,
     DateTime timeSelected,
-    String timeZoneNameSelected,
   ) async {
     if (_existsTimeZone(newTimeZone)) {
       throw DuplicatedTimeZoneException();
@@ -111,16 +113,12 @@ class TimeZoneRepository {
   }
 
   /// Returns [TimeZones] updated for a given [timeSelected]
-  TimeZones convertTimeZones(
-    TimeZones timeZones,
-    DateTime timeSelected,
-    String timeZoneName,
-  ) {
+  TimeZones convertTimeZones(TimeZones timeZones, DateTime timeSelected) {
     final newItems = <TimeZone>[];
 
     for (final timeZone in timeZones.items) {
       final convertedTime = _convertDateTime(
-        fromOffset: timeZoneOffsets[timeZoneName] ?? 0,
+        fromOffset: timeZoneOffsets[timeZoneNameSelected] ?? 0,
         toOffSet: timeZone.gmtOffset,
         time: timeSelected,
       );
