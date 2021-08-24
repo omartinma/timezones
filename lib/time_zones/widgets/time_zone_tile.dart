@@ -36,10 +36,33 @@ class TimeZoneTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             LiveClock.regular(initialDate: timeZone.currentTime),
-            Text(timeZone.timezoneAbbreviation),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(timeZone.timezoneAbbreviation),
+                if (timeZone.offset != 0) ...[
+                  const SizedBox(width: 5),
+                  TimeZoneOffset(
+                    offset: timeZone.offset,
+                  ),
+                ],
+              ],
+            ),
           ],
         ),
       ),
     );
+  }
+}
+
+class TimeZoneOffset extends StatelessWidget {
+  const TimeZoneOffset({Key? key, required this.offset}) : super(key: key);
+
+  final double offset;
+  @override
+  Widget build(BuildContext context) {
+    if (offset == 0) return const SizedBox();
+    final offsetSign = offset.isNegative ? '' : '+';
+    return Text('$offsetSign${offset.toInt()} hrs');
   }
 }

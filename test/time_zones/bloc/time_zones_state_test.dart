@@ -20,6 +20,7 @@ void main() {
               currentTime: DateTime.now(),
               timezoneAbbreviation: 'timezoneAbbreviation',
               gmtOffset: 2,
+              offset: 0,
             ),
           ],
         ),

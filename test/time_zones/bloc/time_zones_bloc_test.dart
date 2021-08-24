@@ -103,7 +103,10 @@ void main() {
         'emits [loading, populates] when success',
         build: () {
           when(
-            () => timeZoneRepository.addTimeZone(timeZone, any(), any()),
+            () => timeZoneRepository.addTimeZone(
+              timeZone,
+              any(),
+            ),
           ).thenAnswer((_) async => timeZones);
           return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
         },
@@ -132,7 +135,7 @@ void main() {
         'emits [loading, populated] with error [duplicated] '
         'when there is DuplicatedTimeZoneException',
         build: () {
-          when(() => timeZoneRepository.addTimeZone(timeZone, any(), any()))
+          when(() => timeZoneRepository.addTimeZone(timeZone, any()))
               .thenThrow(DuplicatedTimeZoneException());
           return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
         },
@@ -161,7 +164,7 @@ void main() {
         'emits [loading, populated] with error [notFound] '
         'when there is NotFoundException',
         build: () {
-          when(() => timeZoneRepository.addTimeZone(timeZone, any(), any()))
+          when(() => timeZoneRepository.addTimeZone(timeZone, any()))
               .thenThrow(NotFoundException());
           return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
         },
@@ -196,7 +199,7 @@ void main() {
       blocTest<TimeZonesBloc, TimeZonesState>(
         'emits updated time zones',
         build: () {
-          when(() => timeZoneRepository.convertTimeZones(any(), any(), any()))
+          when(() => timeZoneRepository.convertTimeZones(any(), any()))
               .thenReturn(timeZones);
           return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
         },
@@ -242,7 +245,7 @@ void main() {
       blocTest<TimeZonesBloc, TimeZonesState>(
         'emits updated time zones',
         build: () {
-          when(() => timeZoneRepository.convertTimeZones(any(), any(), any()))
+          when(() => timeZoneRepository.convertTimeZones(any(), any()))
               .thenReturn(timeZones);
           return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
         },

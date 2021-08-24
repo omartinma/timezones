@@ -23,9 +23,11 @@ class TimeZoneRepository {
     required TimeZoneApi timeZoneApi,
     required LocationApi locationApi,
     required Storage storage,
+    String? timeZoneName,
   })  : _timeZoneApi = timeZoneApi,
         _locationApi = locationApi,
-        _storage = storage;
+        _storage = storage,
+        timeZoneNameSelected = timeZoneName ?? DateTime.now().timeZoneName;
 
   final TimeZoneApi _timeZoneApi;
   final LocationApi _locationApi;
@@ -35,6 +37,12 @@ class TimeZoneRepository {
   /// Exposes last updated list of [TimeZone]
   TimeZones get timeZones => _timeZones;
   TimeZones _timeZones = const TimeZones();
+
+  /// Returns the offset for the current selected time zone
+  double get offsetSelected => timeZoneOffsets[timeZoneNameSelected] ?? 0;
+
+  /// Exposes last selected global time zone name
+  String timeZoneNameSelected;
 
   /// Returns a [TimeZone] from a query based on location
   /// Throws [NotFoundException] if query is not found
@@ -50,6 +58,7 @@ class TimeZoneRepository {
         currentTime: timeZoneApiResponse.datetime,
         timezoneAbbreviation: timeZoneApiResponse.timezoneAbbreviation,
         gmtOffset: timeZoneApiResponse.gmtOffset,
+        offset: timeZoneApiResponse.gmtOffset - offsetSelected,
       );
     } catch (_) {
       throw NotFoundException();
@@ -91,7 +100,6 @@ class TimeZoneRepository {
   Future<TimeZones> addTimeZone(
     TimeZone newTimeZone,
     DateTime timeSelected,
-    String timeZoneNameSelected,
   ) async {
     if (_existsTimeZone(newTimeZone)) {
       throw DuplicatedTimeZoneException();
@@ -111,16 +119,12 @@ class TimeZoneRepository {
   }
 
   /// Returns [TimeZones] updated for a given [timeSelected]
-  TimeZones convertTimeZones(
-    TimeZones timeZones,
-    DateTime timeSelected,
-    String timeZoneName,
-  ) {
+  TimeZones convertTimeZones(TimeZones timeZones, DateTime timeSelected) {
     final newItems = <TimeZone>[];
 
     for (final timeZone in timeZones.items) {
       final convertedTime = _convertDateTime(
-        fromOffset: timeZoneOffsets[timeZoneName] ?? 0,
+        fromOffset: timeZoneOffsets[timeZoneNameSelected] ?? 0,
         toOffSet: timeZone.gmtOffset,
         time: timeSelected,
       );

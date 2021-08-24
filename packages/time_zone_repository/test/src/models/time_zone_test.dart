@@ -9,6 +9,7 @@ void main() {
         currentTime: DateTime.now(),
         timezoneAbbreviation: 'timezoneAbbreviation',
         gmtOffset: 0,
+        offset: 0,
       );
 
       final timeZone2 = TimeZone.fromJson(timeZone1.toJson());
@@ -21,6 +22,7 @@ void main() {
         currentTime: DateTime.now(),
         timezoneAbbreviation: 'timezoneAbbreviation',
         gmtOffset: 0,
+        offset: 0,
       );
 
       final timeZone2 = timeZone1.copyWith();

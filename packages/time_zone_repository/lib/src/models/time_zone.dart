@@ -12,6 +12,7 @@ class TimeZone extends Equatable {
     required this.currentTime,
     required this.timezoneAbbreviation,
     required this.gmtOffset,
+    required this.offset,
   });
 
   /// Converts a [Map<String, dynamic>] into a [TimeZone] instance.
@@ -33,12 +34,17 @@ class TimeZone extends Equatable {
   /// Time zone offset
   final double gmtOffset;
 
+  /// Offset respect to the global time zone selected
+  @JsonKey(defaultValue: 0)
+  final double offset;
+
   @override
   List<Object> get props => [
         location,
         currentTime,
         timezoneAbbreviation,
         gmtOffset,
+        offset,
       ];
 
   /// CopyWith
@@ -47,12 +53,14 @@ class TimeZone extends Equatable {
     DateTime? currentTime,
     String? timezoneAbbreviation,
     double? gmtOffset,
+    double? offset,
   }) {
     return TimeZone(
       location: location ?? this.location,
       currentTime: currentTime ?? this.currentTime,
       timezoneAbbreviation: timezoneAbbreviation ?? this.timezoneAbbreviation,
       gmtOffset: gmtOffset ?? this.gmtOffset,
+      offset: offset ?? this.offset,
     );
   }
 }
