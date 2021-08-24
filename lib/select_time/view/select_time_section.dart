@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_zones_ui/time_zones_ui.dart';
@@ -53,21 +51,7 @@ class SelectTimeSection extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            BlocSelector<SelectTimeBloc, SelectTimeState, String>(
-              selector: (state) => state.timeZoneName,
-              builder: (context, timeZoneName) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: Text(
-                    timeZoneName,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                );
-              },
-            )
+            const SelectTimeZoneName(),
           ],
         ),
       ),

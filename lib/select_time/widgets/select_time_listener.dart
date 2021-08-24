@@ -6,18 +6,33 @@ class SelectTimeListener extends StatelessWidget {
   const SelectTimeListener({
     Key? key,
     required this.onTimeChanged,
+    required this.onTimeZoneNmaeChanged,
     required this.child,
   }) : super(key: key);
 
   final ValueSetter<DateTime> onTimeChanged;
+  final ValueSetter<String> onTimeZoneNmaeChanged;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SelectTimeBloc, SelectTimeState>(
-      listener: (context, state) {
-        onTimeChanged(state.timeSelected);
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<SelectTimeBloc, SelectTimeState>(
+          listenWhen: (previous, current) =>
+              previous.timeSelected != current.timeSelected,
+          listener: (context, state) {
+            onTimeChanged(state.timeSelected);
+          },
+        ),
+        BlocListener<SelectTimeBloc, SelectTimeState>(
+          listenWhen: (previous, current) =>
+              previous.timeZoneName != current.timeZoneName,
+          listener: (context, state) {
+            onTimeZoneNmaeChanged(state.timeZoneName);
+          },
+        ),
+      ],
       child: child,
     );
   }

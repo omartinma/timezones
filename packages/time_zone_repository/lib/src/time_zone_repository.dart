@@ -89,7 +89,10 @@ class TimeZoneRepository {
   /// for a selected time
   /// Throws [DuplicatedTimeZoneException] if this [TimeZone] exists already
   Future<TimeZones> addTimeZone(
-      TimeZone newTimeZone, DateTime timeSelected) async {
+    TimeZone newTimeZone,
+    DateTime timeSelected,
+    String timeZoneNameSelected,
+  ) async {
     if (_existsTimeZone(newTimeZone)) {
       throw DuplicatedTimeZoneException();
     }
@@ -110,8 +113,10 @@ class TimeZoneRepository {
   TimeZones convertTimeZones(
     TimeZones timeZones,
     DateTime timeSelected,
+    String timeZoneName,
   ) {
     final newItems = <TimeZone>[];
+
     for (final timeZone in timeZones.items) {
       final convertedTime = dateTimeToOffset(
         offset: timeZone.gmtOffset,

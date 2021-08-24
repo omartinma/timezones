@@ -27,6 +27,9 @@ class TimeZonesView extends StatelessWidget {
     return SelectTimeListener(
       onTimeChanged: (value) =>
           context.read<TimeZonesBloc>().add(TimeZonesTimeSelected(time: value)),
+      onTimeZoneNmaeChanged: (value) => context
+          .read<TimeZonesBloc>()
+          .add(TimeZonesTimeZoneNameSelected(timeZoneName: value)),
       child: Scaffold(
         body: BlocConsumer<TimeZonesBloc, TimeZonesState>(
           listener: (context, state) {

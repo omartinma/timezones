@@ -12,3 +12,12 @@ class SelectTimeSelected extends SelectTimeEvent {
   @override
   List<Object?> get props => [time];
 }
+
+class SelectTimeTimeZoneNameSelected extends SelectTimeEvent {
+  const SelectTimeTimeZoneNameSelected(this.timeZoneName);
+
+  final String timeZoneName;
+
+  @override
+  List<Object?> get props => [timeZoneName];
+}

@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:instant/instant.dart';
+
 import 'package:equatable/equatable.dart';
 
 part 'select_time_event.dart';
@@ -19,6 +21,12 @@ class SelectTimeBloc extends Bloc<SelectTimeEvent, SelectTimeState> {
   ) async* {
     if (event is SelectTimeSelected) {
       yield state.copyWith(timeSelected: event.time);
+    } else if (event is SelectTimeTimeZoneNameSelected) {
+      final currentTime = curDateTimeByZone(zone: event.timeZoneName);
+      yield state.copyWith(
+        timeZoneName: event.timeZoneName,
+        timeSelected: currentTime,
+      );
     }
   }
 }
