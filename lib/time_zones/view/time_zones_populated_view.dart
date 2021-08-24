@@ -15,6 +15,7 @@ class TimeZonesPopulatedView extends StatelessWidget {
     return ListView.builder(
       itemBuilder: (context, index) => TimeZoneTile(timeZone: timeZones[index]),
       itemCount: timeZones.length,
+      padding: EdgeInsets.zero,
     );
   }
 }

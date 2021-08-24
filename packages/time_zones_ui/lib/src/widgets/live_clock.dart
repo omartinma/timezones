@@ -36,9 +36,7 @@ class LiveClock extends StatefulWidget {
   }) : this._(
           key: key,
           initialDate: initialDate,
-          textStyle: const TextStyle(
-            fontSize: 16,
-          ),
+          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         );
 
   const LiveClock._({

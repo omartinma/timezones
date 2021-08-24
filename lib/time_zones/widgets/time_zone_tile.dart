@@ -27,8 +27,18 @@ class TimeZoneTile extends StatelessWidget {
         ),
       ],
       child: ListTile(
-        title: Text(timeZone.location),
-        trailing: LiveClock.regular(initialDate: timeZone.currentTime),
+        title: Text(
+          timeZone.location,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            LiveClock.regular(initialDate: timeZone.currentTime),
+            Text(timeZone.timezoneAbbreviation),
+          ],
+        ),
       ),
     );
   }
