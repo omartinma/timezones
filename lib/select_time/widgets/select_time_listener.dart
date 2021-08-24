@@ -21,16 +21,13 @@ class SelectTimeListener extends StatelessWidget {
         BlocListener<SelectTimeBloc, SelectTimeState>(
           listenWhen: (previous, current) =>
               previous.timeSelected != current.timeSelected,
-          listener: (context, state) {
-            onTimeChanged(state.timeSelected);
-          },
+          listener: (context, state) => onTimeChanged(state.timeSelected),
         ),
         BlocListener<SelectTimeBloc, SelectTimeState>(
           listenWhen: (previous, current) =>
               previous.timeZoneName != current.timeZoneName,
-          listener: (context, state) {
-            onTimeZoneNmaeChanged(state.timeZoneName);
-          },
+          listener: (context, state) =>
+              onTimeZoneNmaeChanged(state.timeZoneName),
         ),
       ],
       child: child,

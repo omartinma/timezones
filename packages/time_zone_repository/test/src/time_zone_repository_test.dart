@@ -28,6 +28,7 @@ void main() {
       woeid: 0,
     );
     final time = DateTime.now();
+    const timeZoneName = 'CEST';
 
     final timeZoneApiResponse = TimeZoneApiResponse(
       datetime: time,
@@ -118,7 +119,11 @@ void main() {
     group('addTimeZone', () {
       test('completes', () async {
         expect(
-          timeZoneRepository.addTimeZone(timeZones.items.first, time),
+          timeZoneRepository.addTimeZone(
+            timeZones.items.first,
+            time,
+            timeZoneName,
+          ),
           completes,
         );
       });
@@ -126,14 +131,10 @@ void main() {
       test('throws DuplicatedTimeZoneException if tryng to add a duplicate',
           () async {
         await timeZoneRepository.addTimeZone(
-          timeZones.items.first,
-          time,
-        );
+            timeZones.items.first, time, timeZoneName);
         expect(
           timeZoneRepository.addTimeZone(
-            timeZones.items.first,
-            time,
-          ),
+              timeZones.items.first, time, timeZoneName),
           throwsA(isA<DuplicatedTimeZoneException>()),
         );
       });
@@ -142,7 +143,11 @@ void main() {
     group('convertTimeZones', () {
       test('completes', () async {
         expect(
-          timeZoneRepository.convertTimeZones(timeZones, DateTime.now()),
+          timeZoneRepository.convertTimeZones(
+            timeZones,
+            DateTime.now(),
+            timeZoneName,
+          ),
           isNotNull,
         );
       });
