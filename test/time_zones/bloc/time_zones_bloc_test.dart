@@ -103,7 +103,7 @@ void main() {
         'emits [loading, populates] when success',
         build: () {
           when(
-            () => timeZoneRepository.addTimeZone(timeZone, any()),
+            () => timeZoneRepository.addTimeZone(timeZone, any(), any()),
           ).thenAnswer((_) async => timeZones);
           return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
         },
@@ -132,7 +132,7 @@ void main() {
         'emits [loading, populated] with error [duplicated] '
         'when there is DuplicatedTimeZoneException',
         build: () {
-          when(() => timeZoneRepository.addTimeZone(timeZone, any()))
+          when(() => timeZoneRepository.addTimeZone(timeZone, any(), any()))
               .thenThrow(DuplicatedTimeZoneException());
           return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
         },
@@ -161,7 +161,7 @@ void main() {
         'emits [loading, populated] with error [notFound] '
         'when there is NotFoundException',
         build: () {
-          when(() => timeZoneRepository.addTimeZone(timeZone, any()))
+          when(() => timeZoneRepository.addTimeZone(timeZone, any(), any()))
               .thenThrow(NotFoundException());
           return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
         },
@@ -196,7 +196,7 @@ void main() {
       blocTest<TimeZonesBloc, TimeZonesState>(
         'emits updated time zones',
         build: () {
-          when(() => timeZoneRepository.convertTimeZones(any(), any()))
+          when(() => timeZoneRepository.convertTimeZones(any(), any(), any()))
               .thenReturn(timeZones);
           return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
         },
@@ -231,6 +231,29 @@ void main() {
             timeZones: timeZones.copyWith(items: []),
             status: TimeZonesStatus.populated,
           )
+        ],
+      );
+    });
+
+    group('TimeZonesTimeZoneNameSelected', () {
+      setUpAll(() {
+        registerFallbackValue(FakeTimeZones());
+      });
+      blocTest<TimeZonesBloc, TimeZonesState>(
+        'emits updated time zones',
+        build: () {
+          when(() => timeZoneRepository.convertTimeZones(any(), any(), any()))
+              .thenReturn(timeZones);
+          return TimeZonesBloc(timeZoneRepository: timeZoneRepository);
+        },
+        act: (bloc) =>
+            bloc.add(TimeZonesTimeZoneNameSelected(timeZoneName: 'CEST')),
+        expect: () => [
+          isA<TimeZonesState>().having(
+            (state) => state.timeZoneName,
+            'timeZoneName',
+            'CEST',
+          ),
         ],
       );
     });

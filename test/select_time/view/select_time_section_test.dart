@@ -51,10 +51,7 @@ void main() {
 
     testWidgets('displays the time selected', (tester) async {
       await tester.pumpSelectTimeSection(
-        Scaffold(
-            body: SelectTimeSection(
-          height: 100,
-        )),
+        Scaffold(body: SelectTimeSection(height: 100)),
         selectTimeBloc: selectTimeBloc,
       );
       expect(find.text(currentTime.toHours()), findsOneWidget);
@@ -62,17 +59,34 @@ void main() {
 
     testWidgets('calls to update time', (tester) async {
       await tester.pumpSelectTimeSection(
-        Scaffold(
-            body: SelectTimeSection(
-          height: 100,
-        )),
+        Scaffold(body: SelectTimeSection(height: 100)),
         selectTimeBloc: selectTimeBloc,
       );
-      await tester.tap(find.byType(GestureDetector));
+      await tester.tap(find.byType(SelectTimeView));
       await tester.pumpAndSettle();
       await tester.tap(find.text('OK'));
       verify(() => selectTimeBloc.add(any(that: isA<SelectTimeSelected>())))
           .called(1);
+    });
+
+    testWidgets('calls to update time zone name when any selected',
+        (tester) async {
+      await tester.pumpSelectTimeSection(
+        Scaffold(body: SelectTimeSection(height: 100)),
+        selectTimeBloc: selectTimeBloc,
+      );
+      await tester.tap(find.byType(SelectTimeZoneName));
+      await tester.pump();
+      await tester.pumpAndSettle();
+
+      final listTileFinder = find.text('ACDT').first;
+      expect(listTileFinder, findsOneWidget);
+      await tester.ensureVisible(listTileFinder);
+
+      await tester.tap(listTileFinder);
+      await tester.pumpAndSettle();
+      verify(() => selectTimeBloc
+          .add(any(that: isA<SelectTimeTimeZoneNameSelected>()))).called(1);
     });
   });
 }

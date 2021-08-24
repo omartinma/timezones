@@ -197,7 +197,7 @@ packages:
     source: hosted
     version: "4.0.0"
   instant:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: instant
       url: "https://pub.dartlang.org"

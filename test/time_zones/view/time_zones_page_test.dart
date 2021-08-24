@@ -220,7 +220,7 @@ void main() {
       );
     });
 
-    testWidgets('updates time', (tester) async {
+    testWidgets('listen updates on time', (tester) async {
       final time = DateTime.now();
       whenListen(
         selectTimeBloc,
@@ -234,7 +234,27 @@ void main() {
         selectTimeBloc: selectTimeBloc,
       );
       await tester.pump();
-      verify(() => timeZonesBloc.add(TimeZonesTimeSelected(time: time)));
+      verify(() => timeZonesBloc.add(TimeZonesTimeSelected(time: time)))
+          .called(1);
+    });
+
+    testWidgets('listen updates on time zone name', (tester) async {
+      final time = DateTime.now();
+      whenListen(
+        selectTimeBloc,
+        Stream.fromIterable(<SelectTimeState>[
+          SelectTimeState(time, time.timeZoneName),
+          SelectTimeState(time, 'CDT'),
+        ]),
+      );
+      await tester.pumpTimeZonesPage(
+        const TimeZonesView(),
+        timeZonesBloc: timeZonesBloc,
+        selectTimeBloc: selectTimeBloc,
+      );
+      await tester.pump();
+      verify(() => timeZonesBloc
+          .add(TimeZonesTimeZoneNameSelected(timeZoneName: 'CDT'))).called(1);
     });
   });
 }

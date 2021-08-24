@@ -1,8 +1,4 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_zones_ui/time_zones_ui.dart';
 import 'package:timezones/select_time/select_time.dart';
 
 class SelectTimeSection extends StatelessWidget {
@@ -19,55 +15,12 @@ class SelectTimeSection extends StatelessWidget {
       child: SafeArea(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            BlocSelector<SelectTimeBloc, SelectTimeState, DateTime>(
-              selector: (state) => state.timeSelected,
-              builder: (context, timeSelected) {
-                return GestureDetector(
-                  onTap: () async {
-                    final bloc = context.read<SelectTimeBloc>();
-                    final selected = await showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.fromDateTime(timeSelected),
-                      initialEntryMode: TimePickerEntryMode.input,
-                    );
-                    if (selected != null) {
-                      final now = DateTime.now();
-                      bloc.add(
-                        SelectTimeSelected(
-                          DateTime(
-                            now.year,
-                            now.month,
-                            now.day,
-                            selected.hour,
-                            selected.minute,
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                  child: LiveClock.big(initialDate: timeSelected),
-                );
-              },
-            ),
-            const SizedBox(
+          children: const [
+            SelectTimeView(),
+            SizedBox(
               width: 10,
             ),
-            BlocSelector<SelectTimeBloc, SelectTimeState, String>(
-              selector: (state) => state.timeZoneName,
-              builder: (context, timeZoneName) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: Text(
-                    timeZoneName,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                );
-              },
-            )
+            SelectTimeZoneName(),
           ],
         ),
       ),

@@ -36,3 +36,12 @@ class TimeZonesDeleteRequested extends TimeZonesEvent {
   @override
   List<Object?> get props => [timeZone];
 }
+
+class TimeZonesTimeZoneNameSelected extends TimeZonesEvent {
+  const TimeZonesTimeZoneNameSelected({required this.timeZoneName});
+
+  final String timeZoneName;
+
+  @override
+  List<Object?> get props => [timeZoneName];
+}
