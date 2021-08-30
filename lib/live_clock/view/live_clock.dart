@@ -53,13 +53,7 @@ class LiveClock extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           LiveClockBloc(initialDate)..add(const LiveClockTimerStarted()),
-      child: Builder(
-        builder: (context) {
-          return LiveClockView(
-            textStyle: textStyle,
-          );
-        },
-      ),
+      child: LiveClockView(textStyle: textStyle),
     );
   }
 }
