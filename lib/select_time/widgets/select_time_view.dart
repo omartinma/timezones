@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_zones_ui/time_zones_ui.dart';
+import 'package:timezones/live_clock/live_clock.dart';
 import 'package:timezones/select_time/select_time.dart';
 
 class SelectTimeView extends StatelessWidget {

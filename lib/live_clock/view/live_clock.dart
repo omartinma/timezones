@@ -1,14 +1,11 @@
-import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_zones_ui/time_zones_ui.dart';
+import 'package:timezones/live_clock/live_clock.dart';
 
-/// {@template live_clock}
-/// LiveClock
-/// {@endtemplate}
-class LiveClock extends StatefulWidget {
-  /// Default constructor
+class LiveClock extends StatelessWidget {
   const LiveClock({
     Key? key,
     required DateTime initialDate,
@@ -52,52 +49,35 @@ class LiveClock extends StatefulWidget {
   final TextStyle textStyle;
 
   @override
-  _LiveClockState createState() => _LiveClockState();
-}
-
-class _LiveClockState extends State<LiveClock> {
-  late Timer? _timer;
-  late DateTime _currentTime;
-
-  @override
-  void didUpdateWidget(covariant LiveClock oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _currentTime = widget.initialDate;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _currentTime = widget.initialDate;
-    _timer = Timer(
-      const Duration(minutes: 1) -
-          Duration(
-            seconds: _currentTime.second,
-            milliseconds: _currentTime.millisecond,
-          ),
-      _updateTime,
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) =>
+          LiveClockBloc(initialDate)..add(const LiveClockTimerStarted()),
+      child: Builder(
+        builder: (context) {
+          return LiveClockView(
+            textStyle: textStyle,
+          );
+        },
+      ),
     );
   }
+}
 
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
+class LiveClockView extends StatelessWidget {
+  const LiveClockView({Key? key, required this.textStyle}) : super(key: key);
 
-  void _updateTime() {
-    // Update once per minute
-    setState(() {
-      _currentTime = _currentTime.add(const Duration(minutes: 1));
-      _timer = Timer(const Duration(minutes: 1), _updateTime);
-    });
-  }
+  final TextStyle textStyle;
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      _currentTime.toHours(),
-      style: widget.textStyle,
+    return BlocBuilder<LiveClockBloc, LiveClockState>(
+      builder: (context, state) {
+        return Text(
+          state.time.toHours(),
+          style: textStyle,
+        );
+      },
     );
   }
 }
