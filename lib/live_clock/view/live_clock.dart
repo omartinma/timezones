@@ -51,8 +51,7 @@ class LiveClock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          LiveClockBloc(initialDate)..add(const LiveClockTimerStarted()),
+      create: (context) => LiveClockBloc(initialDate),
       child: LiveClockView(textStyle: textStyle),
     );
   }

@@ -27,12 +27,13 @@ extension on WidgetTester {
     Widget child, {
     required LiveClockBloc liveClockBloc,
   }) async {
-    await pumpWidget(MaterialApp(
+    await pumpWidget(
+      MaterialApp(
         home: Scaffold(
-            body: BlocProvider.value(
-      value: liveClockBloc,
-      child: child,
-    ))));
+          body: BlocProvider.value(value: liveClockBloc, child: child),
+        ),
+      ),
+    );
   }
 }
 
@@ -83,6 +84,21 @@ void main() {
         liveClockBloc: liveClockBloc,
       );
       expect(find.text(time.toHours()), findsOneWidget);
+    });
+
+    testWidgets('calls LiveClockTimerEnded when timer ends', (tester) async {
+      final time = DateTime.now();
+      when(() => liveClockBloc.state).thenReturn(LiveClockState(time: time));
+      await tester.pumpLiveClockView(
+        LiveClockView(textStyle: TextStyle()),
+        liveClockBloc: liveClockBloc,
+      );
+      await tester.pumpAndSettle();
+      const increment = Duration(minutes: 60);
+      await tester.pump(increment);
+      await tester.pumpAndSettle();
+      verify(() => liveClockBloc.add(any(that: isA<LiveClockTimerEnded>())))
+          .called(greaterThanOrEqualTo(1));
     });
   });
 }

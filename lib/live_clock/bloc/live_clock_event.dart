@@ -7,7 +7,3 @@ abstract class LiveClockEvent {
 class LiveClockTimerEnded extends LiveClockEvent {
   const LiveClockTimerEnded();
 }
-
-class LiveClockTimerStarted extends LiveClockEvent {
-  const LiveClockTimerStarted();
-}
