@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timezones/search/search.dart';
 import 'package:timezones/time_zones/time_zones.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchButton extends StatelessWidget {
   const SearchButton({Key? key}) : super(key: key);

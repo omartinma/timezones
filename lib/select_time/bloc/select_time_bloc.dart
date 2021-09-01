@@ -1,20 +1,35 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:instant/instant.dart';
-
 import 'package:equatable/equatable.dart';
+import 'package:instant/instant.dart';
 
 part 'select_time_event.dart';
 part 'select_time_state.dart';
 
 class SelectTimeBloc extends Bloc<SelectTimeEvent, SelectTimeState> {
-  SelectTimeBloc()
+  SelectTimeBloc(DateTime initialTime)
       : super(SelectTimeState(
-          DateTime.now(),
-          DateTime.now().timeZoneName,
-        ));
+          initialTime,
+          initialTime.timeZoneName,
+        )) {
+    final timerDuration = const Duration(minutes: 1) -
+        Duration(
+          seconds: initialTime.second,
+          milliseconds: initialTime.millisecond,
+        );
+    _timer = Timer(
+      timerDuration,
+      _onTimerEnded,
+    );
+  }
+  @override
+  Future<void> close() {
+    _timer?.cancel();
+    return super.close();
+  }
 
+  Timer? _timer;
   @override
   Stream<SelectTimeState> mapEventToState(
     SelectTimeEvent event,
@@ -28,5 +43,18 @@ class SelectTimeBloc extends Bloc<SelectTimeEvent, SelectTimeState> {
         timeSelected: currentTime,
       );
     }
+  }
+
+  void _onTimerEnded() {
+    final newTime = state.timeSelected.add(const Duration(minutes: 1) -
+        Duration(
+          seconds: state.timeSelected.second,
+          milliseconds: state.timeSelected.millisecond,
+        ));
+    _timer = Timer(
+      const Duration(minutes: 1),
+      _onTimerEnded,
+    );
+    this.add(SelectTimeSelected(newTime));
   }
 }

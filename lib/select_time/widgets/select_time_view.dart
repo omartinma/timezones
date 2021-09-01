@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:timezones/live_clock/live_clock.dart';
+import 'package:timezones/live_clock/view/live_clock.dart';
 import 'package:timezones/select_time/select_time.dart';
 
 class SelectTimeView extends StatelessWidget {
@@ -34,7 +34,7 @@ class SelectTimeView extends StatelessWidget {
               );
             }
           },
-          child: LiveClock.big(initialDate: timeSelected),
+          child: LiveClock.big(time: timeSelected),
         );
       },
     );
