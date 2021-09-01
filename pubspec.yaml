@@ -36,6 +36,23 @@ dev_dependencies:
   mocktail: ^0.1.0
   very_good_analysis: ^2.3.0
 
+dependency_overrides:
+  bloc:
+    git:
+      url: https://github.com/felangel/bloc
+      path: packages/bloc
+      ref: 568c92b80342b8a00b4d926d38ffb7a041893a10
+  bloc_test:
+    git:
+      url: https://github.com/felangel/bloc
+      path: packages/bloc_test
+      ref: 568c92b80342b8a00b4d926d38ffb7a041893a10
+  flutter_bloc:
+    git:
+      url: https://github.com/felangel/bloc
+      path: packages/flutter_bloc
+      ref: 568c92b80342b8a00b4d926d38ffb7a041893a10
+
 flutter:
   uses-material-design: true
   generate: true
