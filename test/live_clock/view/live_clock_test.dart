@@ -85,36 +85,5 @@ void main() {
       );
       expect(find.text(time.toHours()), findsOneWidget);
     });
-
-    testWidgets('calls LiveClockTimerEnded when timer ends', (tester) async {
-      final time = DateTime.now();
-      when(() => liveClockBloc.state).thenReturn(LiveClockState(time: time));
-      await tester.pumpLiveClockView(
-        LiveClockView(textStyle: TextStyle()),
-        liveClockBloc: liveClockBloc,
-      );
-      await tester.pumpAndSettle();
-      const increment = Duration(minutes: 60);
-      await tester.pump(increment);
-      await tester.pumpAndSettle();
-      verify(() => liveClockBloc.add(any(that: isA<LiveClockTimerEnded>())))
-          .called(greaterThanOrEqualTo(1));
-    });
-
-    testWidgets('displays correct time when timer ends', (tester) async {
-      final time = DateTime(2021);
-      when(() => liveClockBloc.state).thenReturn(LiveClockState(time: time));
-      await tester.pumpLiveClockView(
-        LiveClockView(textStyle: TextStyle()),
-        liveClockBloc: liveClockBloc,
-      );
-      await tester.pumpAndSettle();
-      expect(find.text(time.toHours()), findsOneWidget);
-      const increment = Duration(minutes: 60);
-      await tester.pump(increment);
-      final newTime = time.add(increment);
-      await tester.pumpAndSettle();
-      expect(find.text(newTime.toHours()), findsOneWidget);
-    });
   });
 }

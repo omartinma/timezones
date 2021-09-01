@@ -31,6 +31,7 @@ dependencies:
 
 dev_dependencies:
   bloc_test: ^8.0.0
+  fake_async: ^1.2.0
   flutter_test:
     sdk: flutter
   mocktail: ^0.1.0
