@@ -86,7 +86,9 @@ class TimeZoneRepository {
       final updatedTime = curDateTimeByUtcOffset(offset: item.gmtOffset);
       timeZonesItems.add(item.copyWith(currentTime: updatedTime));
     }
+    timeZonesItems.sort((a, b) => a.gmtOffset.compareTo(b.gmtOffset));
     _timeZones = cachedTimeZones.copyWith(items: timeZonesItems);
+    _sortByGMTOffset(_timeZones);
 
     /// Refresh cache
     await _refreshCache();
@@ -114,6 +116,8 @@ class TimeZoneRepository {
       ..add(newTimeZone.copyWith(currentTime: convertedTime));
 
     _timeZones = _timeZones.copyWith(items: newItems);
+    _sortByGMTOffset(_timeZones);
+
     await _refreshCache();
     return _timeZones;
   }
@@ -132,7 +136,9 @@ class TimeZoneRepository {
       final newTimeZone = timeZone.copyWith(currentTime: convertedTime);
       newItems.add(newTimeZone);
     }
-    return _timeZones = _timeZones.copyWith(items: newItems);
+    _timeZones = _timeZones.copyWith(items: newItems);
+    _sortByGMTOffset(_timeZones);
+    return _timeZones;
   }
 
   /// Add a new [TimeZone] and return the last updated [TimeZones]
@@ -166,5 +172,9 @@ class TimeZoneRepository {
   }) {
     final offset = toOffSet - fromOffset;
     return time.add(Duration(hours: offset.toInt()));
+  }
+
+  void _sortByGMTOffset(TimeZones timeZones) {
+    timeZones.items.sort((a, b) => a.gmtOffset.compareTo(b.gmtOffset));
   }
 }
