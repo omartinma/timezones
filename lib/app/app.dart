@@ -17,10 +17,13 @@ class App extends StatelessWidget {
   const App({
     Key? key,
     required TimeZoneRepository timeZoneRepository,
+    required SelectTimeBloc selectTimeBloc,
   })  : _timeZoneRepository = timeZoneRepository,
+        _selectTimeBloc = selectTimeBloc,
         super(key: key);
 
   final TimeZoneRepository _timeZoneRepository;
+  final SelectTimeBloc _selectTimeBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,7 @@ class App extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider.value(value: SelectTimeBloc()),
+          BlocProvider.value(value: _selectTimeBloc),
         ],
         child: const AppView(),
       ),

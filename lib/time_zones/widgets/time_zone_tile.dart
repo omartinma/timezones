@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:time_zone_repository/time_zone_repository.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timezones/live_clock/live_clock.dart';
 import 'package:timezones/time_zones/time_zones.dart';
 
@@ -35,7 +35,7 @@ class TimeZoneTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            LiveClock.regular(initialDate: timeZone.currentTime),
+            LiveClock.regular(time: timeZone.currentTime),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [

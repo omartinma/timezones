@@ -25,23 +25,43 @@ class FakeSelectTimeEvent extends Fake implements SelectTimeEvent {}
 
 class FakeSelectTimeState extends Fake implements SelectTimeState {}
 
+class FakeTimeZones extends Fake implements TimeZones {}
+
 void main() {
   group('App', () {
     late TimeZoneRepository timeZoneRepository;
+    late SelectTimeBloc selectTimeBloc;
+    final time = DateTime.now();
+
+    setUpAll(() {
+      registerFallbackValue<TimeZones>(FakeTimeZones());
+      registerFallbackValue<SelectTimeEvent>(FakeSelectTimeEvent());
+      registerFallbackValue<SelectTimeState>(FakeSelectTimeState());
+    });
 
     setUp(() {
       timeZoneRepository = MockTimeZoneRepository();
+      selectTimeBloc = MockSelectTimeBloc();
+
       when(() => timeZoneRepository.getTimeZoneForLocation(any()))
-          .thenAnswer((_) async => Future.value());
+          .thenAnswer((_) async => createTimeZoneStub());
       when(() => timeZoneRepository.getTimeZones())
-          .thenAnswer((_) async => TimeZones());
+          .thenAnswer((_) async => createTimeZonesStub());
+      when(() => timeZoneRepository.convertTimeZones(any(), any()))
+          .thenReturn(createTimeZonesStub());
+      when(() => selectTimeBloc.state).thenReturn(
+        SelectTimeState(time, time.timeZoneName),
+      );
     });
 
     testWidgets('renders AppView', (tester) async {
       await tester.pumpApp(
-        App(timeZoneRepository: timeZoneRepository),
+        App(
+          timeZoneRepository: timeZoneRepository,
+          selectTimeBloc: selectTimeBloc,
+        ),
       );
-      await tester.pump();
+      await tester.pumpAndSettle();
       expect(find.byType(AppView), findsOneWidget);
     });
   });
@@ -60,7 +80,7 @@ void main() {
       selectTimeBloc = MockSelectTimeBloc();
       final time = DateTime.now();
       when(() => timeZoneRepository.getTimeZoneForLocation(any()))
-          .thenAnswer((_) async => Future.value());
+          .thenAnswer((_) async => createTimeZoneStub());
       when(() => timeZoneRepository.getTimeZones())
           .thenAnswer((_) async => TimeZones());
       when(() => selectTimeBloc.state).thenReturn(

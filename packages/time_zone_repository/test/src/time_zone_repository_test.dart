@@ -2,13 +2,13 @@
 
 import 'dart:convert';
 
+import 'package:instant/instant.dart';
 import 'package:location_api/location_api.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:storage/storage.dart';
 import 'package:test/test.dart';
 import 'package:time_zone_api/time_zone_api.dart';
 import 'package:time_zone_repository/time_zone_repository.dart';
-import 'package:instant/instant.dart';
 
 class MockTimeZoneApi extends Mock implements TimeZoneApi {}
 
